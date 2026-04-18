@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Raduntsev — Portfolio</title>
+
+    <!-- New design CSS -->
+    <link rel="stylesheet" href="api.js" type="text/css">
+
+    <!-- PP Telegraf font via CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fallback to similar editorial font -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Matter.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+    <style>
+        /* ── FONT OVERRIDE: Use Space Grotesk until Pptelegraf loads ── */
+        @font-face {
+            font-family: 'Pptelegraf';
+            src: local('Space Grotesk'), url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gd2.woff2') format('woff2');
+            font-weight: 400;
+        }
+
+        /* ── RESET & BASE ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: #fff;
+            color: #333;
+            font-family: 'Space Grotesk', 'Pptelegraf', Arial, sans-serif;
+            font-size: 14px;
+            line-height: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── LANGUAGE TOGGLE ── */
+        body.lang-ru .lang-en { display: none !important; }
+        body.lang-en .lang-ru { display: none !important; }
+
+        /* ── SPA VIEWS ── */
+        .view-hidden { display: none !important; }
+        .view-active { display: block !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .view-active { animation: fadeIn 0.4s ease; }
+
+        /* ── NAV ── */
+        .navbar {
+            background: transparent;
+            border-bottom: 1px solid #000;
+            margin: 0 20px;
+            padding: 0 8px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(4px);
+        }
+        .nav-link, .nav-link-last, .href {
+            color: #000;
+            letter-spacing: 3px;
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 16px;
+            line-height: 20px;
+            text-decoration: none;
+            display: inline-block;
+            padding: 22px 0 18px;
+            margin: 0 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .nav-link:hover, .nav-link-last:hover, .href:hover {
+            border-bottom: 1px solid #000;
+            padding-bottom: 17px;
+        }
+        .lang-toggle {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            letter-spacing: 3px;
+            font-size: 13px;
+            color: #000;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 22px 0 18px;
+            margin-left: 20px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        .lang-toggle:hover { opacity: 1; }
+        .menu-button {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 22px 0 18px;
+            font-size: 20px;
+        }
+
+        /* ── HERO ── */
+        .hero-section {
+            position: relative;
+            background: #fff;
+            margin: 20px 20px 0;
+            overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            align-items: flex-end;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: contain;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+        .hero-div {
+            position: relative;
+            z-index: 2;
+            padding: 40px 0 50px;
+            width: 100%;
+        }
+        .h2 {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: clamp(36px, 7vw, 90px);
+            font-weight: 400;
+            line-height: 1.0;
+            color: #000;
+            letter-spacing: -0.02em;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 32px;
+        }
+        .hero-tag {
+            background: #f8f9fc;
+            border: 1px solid #d1d5db;
+            color: #111;
+            border-radius: 9999px;
+            padding: 8px 20px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            font-family: monospace;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        /* ── GENERAL SECTION ── */
+        .general-section { background: #fff; }
+        .general-div { margin: 0 20px; }
+
+        /* ── COLLECTION / PROJECTS LIST ── */
+        .collection-item {
+            border-top: 1px solid #000;
+            padding: 20px 0 40px;
+            cursor: pointer;
+            transition: background 0.2s;
+            position: relative;
+        }
+        .collection-item:hover { background: #fafafa; }
+        .project-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            position: relative;
+        }
+        .project-meta {
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+        .project-number {
+            font-family: monospace;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: #999;
+            min-width: 36px;
+        }
+        .project-title-text {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: clamp(18px, 3vw, 28px);
+            font-weight: 400;
+            line-height: 1.1;
+            color: #000;
+            padding: 4px 0;
+            transition: border-color 0.3s ease;
+        }
+        .collection-item:hover .project-title-text {
+            border-top-color: #000;
+            border-bottom-color: #000;
+        }
+        .project-category-badge {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            color: #999;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .project-thumb {
+            width: 80px;
+            height: 56px;
+            object-fit: cover;
+            flex-shrink: 0;
+            filter: grayscale(0.3);
+            transition: filter 0.3s;
+            position: absolute;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            pointer-events: none;
+            width: min(30vw, 400px);
+            height: auto;
+            z-index: 10;
+        }
+        .collection-item:hover .project-thumb {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* ── MOBILE PROJECT THUMBNAIL (appears when item is centered on screen) ── */
+        .project-thumb-mobile {
+            display: none; /* hidden on desktop */
+        }
+
+        @media (max-width: 767px) {
+            .project-thumb-mobile {
+                display: block;
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: contain;
+                margin-top: 14px;
+                border: 0px solid #e5e5e500;
+                opacity: 0;
+                transform: translateY(8px);
+                transition: opacity 0.45s ease, transform 0.45s ease;
+                pointer-events: none;
+            }
+            /* When the parent item is centered — JS adds this class */
+            .collection-item.thumb-visible .project-thumb-mobile {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .news-title {
+            color: #000;
+            background: #fff;
+            border-radius: 20px;
+            padding: 6px 10px 4px;
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 12px;
+            line-height: 16px;
+            box-shadow: 0 0 7px -1px rgba(0,0,0,0.3);
+            display: inline-block;
+            cursor: default;
+            transition: filter 0.2s;
+        }
+        .news-title:hover { filter: blur(2px); }
+
+        /* ── SUB-TITLES / SECTION HEADERS ── */
+        .sub-titles {
+            color: #000;
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 20px;
+            line-height: 22px;
+            display: flex;
+            align-items: center;
+            width: 95%;
+            padding: 20px 0;
+            border-top: 1px solid #000;
+        }
+        .section-heading {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: clamp(28px, 5vw, 56px);
+            font-weight: 400;
+            color: #000;
+            line-height: 1.0;
+            margin-bottom: 32px;
+        }
+
+        /* ── ABOUT SECTION ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 60px 0;
+        }
+        .about-text {
+            font-size: 16px;
+            line-height: 26px;
+            color: #444;
+        }
+
+        /* ── SERVICES (3D CAROUSEL) ── */
+        .services-carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 60px auto 0;
+            height: 350px;
+            perspective: 1200px;
+        }
+        
+        .services-carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: rotate360 40s infinite linear;
+        }
+        
+        .carousel__face {
+            position: absolute;
+            width: 320px;
+            height: 280px;
+            left: 50%;
+            top: 50%;
+            margin-left: -160px;
+            margin-top: -140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+            backface-visibility: hidden;
+        }
+        
+        .carousel__face:hover {
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .face-content {
+            text-align: center;
+            padding: 32px 24px;
+            width: 100%;
+        }
+        
+        .carousel__face h3 {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            color: #000;
+            letter-spacing: 0.05em;
+        }
+        
+        .carousel__face p {
+            font-size: 12px;
+            line-height: 18px;
+            color: #666;
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        .carousel__face:hover p {
+            opacity: 1;
+            color: #333;
+        }
+        
+        .carousel__face:nth-child(1) { transform: rotateY(0deg) translateZ(550px); }
+        .carousel__face:nth-child(2) { transform: rotateY(45deg) translateZ(550px); }
+        .carousel__face:nth-child(3) { transform: rotateY(90deg) translateZ(550px); }
+        .carousel__face:nth-child(4) { transform: rotateY(135deg) translateZ(550px); }
+        .carousel__face:nth-child(5) { transform: rotateY(180deg) translateZ(550px); }
+        .carousel__face:nth-child(6) { transform: rotateY(225deg) translateZ(550px); }
+        .carousel__face:nth-child(7) { transform: rotateY(270deg) translateZ(550px); }
+        .carousel__face:nth-child(8) { transform: rotateY(315deg) translateZ(550px); }
+        
+        @keyframes rotate360 {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(-360deg); }
+        }
+
+        /* ── EXPERIENCE ── */
+        .carousel {
+            display: block;
+            text-align: left;
+            position: relative;
+            margin-bottom: 22px;
+        }
+        
+        .carousel > input {
+            clip: rect(1px, 1px, 1px, 1px);
+            clip-path: inset(50%);
+            height: 1px;
+            width: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+        }
+        
+        .carousel input:nth-of-type(1):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: 0%; }
+        .carousel input:nth-of-type(2):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -100%; }
+        .carousel input:nth-of-type(3):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -200%; }
+        .carousel input:nth-of-type(4):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -300%; }
+        .carousel input:nth-of-type(5):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -400%; }
+        .carousel input:nth-of-type(6):checked ~ .carousel__slides .carousel__slide:first-of-type { margin-left: -500%; }
+        
+        .carousel input:nth-of-type(1):checked ~ .carousel__thumbnails li:nth-of-type(1) { box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.8) inset; }
+        .carousel input:nth-of-type(2):checked ~ .carousel__thumbnails li:nth-of-type(2) { box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.8) inset; }
+        .carousel input:nth-of-type(3):checked ~ .carousel__thumbnails li:nth-of-type(3) { box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.8) inset; }
+        .carousel input:nth-of-type(4):checked ~ .carousel__thumbnails li:nth-of-type(4) { box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.8) inset; }
+        .carousel input:nth-of-type(5):checked ~ .carousel__thumbnails li:nth-of-type(5) { box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.8) inset; }
+        .carousel input:nth-of-type(6):checked ~ .carousel__thumbnails li:nth-of-type(6) { box-shadow: 0px 0px 0px 3px rgba(0,0,0,0.8) inset; }
+        
+        .carousel__slides {
+            position: relative;
+            z-index: 1;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            display: flex;
+        }
+        
+        .carousel__slide {
+            position: relative;
+            display: block;
+            flex: 1 0 100%;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transition: all 300ms ease-out;
+            vertical-align: top;
+            box-sizing: border-box;
+            white-space: normal;
+            background: #fff;
+            padding: 20px 0px;
+        }
+        
+        .carousel__slide figure {
+            display: flex;
+            margin: 0;
+            flex-direction: row;
+            width: 100%;
+            gap: 32px;
+        }
+        
+        .carousel__slide figure > div {
+            flex: 0 0 40%;
+            min-width: 250px;
+            aspect-ratio: 3 / 2;
+            overflow: hidden;
+        }
+        
+        .carousel__slide figure > div img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel__slide figcaption {
+            padding: 0;
+            width: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .carousel__slide .exp-year {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 12px;
+        }
+        
+        .carousel__slide .exp-title {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #000;
+            margin-bottom: 16px;
+        }
+        
+        .carousel__slide .exp-details {
+            font-size: 16px;
+            line-height: 20px;
+            color: #555;
+        }
+        
+        .carousel__thumbnails {
+            list-style: none;
+            padding: 0;
+            margin: 32px -8px 0 -8px;
+            display: flex;
+            gap: 0;
+        }
+        
+        .carousel__thumbnails li {
+            flex: 1 1 auto;
+            max-width: calc((100% / 6) - 16px);
+            margin: 0 8px;
+            transition: all 300ms ease-in-out;
+        }
+        
+        .carousel__thumbnails label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            background: #f5f5f5;
+            border: 0.5px solid #ddd;
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: #1a1a1a;
+            transition: all 300ms ease-in-out;
+        }
+        
+        .carousel__thumbnails label:hover {
+            background: #777777;
+            box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.25);
+        }
+
+        /* ── GALLERY ── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 32px;
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: #f0f0f0;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s, filter 0.3s;
+            filter: grayscale(1);
+        }
+        .gallery-item:hover img { transform: scale(1.08); filter: grayscale(0); }
+        .gallery-overlay {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+        /* ── LIGHTBOX ── */
+        #gallery-lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        #gallery-lightbox.active { display: flex; }
+        #gallery-lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; filter: grayscale(1); }
+
+        /* ── CONTACT / BASKETBALL SECTION ── */
+        #challenge-section {
+            position: relative;
+            height: 80vh;
+            min-height: 480px;
+            max-height: 900px;
+            background: #fff;
+            border: 1px solid #000;
+            margin: 20px;
+            overflow: hidden;
+        }
+        #basketball-wrapper {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            cursor: crosshair;
+        }
+        /* Text panel pinned to top-left, capped at ~45% width so hoop/ball live in right half */
+        .challenge-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            padding: 40px 40px 0;
+            pointer-events: none;
+            max-width: 48%;
+        }
+        .challenge-title {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: clamp(20px, 3vw, 44px);
+            font-weight: 400;
+            color: #000;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+        .challenge-desc {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.55;
+            margin-bottom: 20px;
+            max-width: 320px;
+        }
+        .score-display {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: clamp(36px, 6vw, 88px);
+            font-weight: 700;
+            color: #000;
+            line-height: 1;
+            margin-bottom: 2px;
+            transition: transform 0.3s;
+        }
+        .score-label {
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 18px;
+        }
+        .locked-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid #ff4500;
+            padding: 12px 18px;
+            pointer-events: auto;
+            background: #fff;
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        #unlocked-content {
+            opacity: 0;
+            display: none;
+            transition: opacity 0.7s;
+            pointer-events: auto;
+            margin-top: 16px;
+        }
+        #unlocked-content.visible { display: flex; flex-direction: column; gap: 14px; }
+        #unlocked-content.animated { opacity: 1; }
+        .contact-icons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .contact-icon-btn {
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid #ddd;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .contact-icon-btn:hover { background: #f0f0f0; transform: scale(1.08); }
+        .contact-icon-btn img { border-radius: 4px; display: block; }
+
+        /* ── MOBILE: text full-width at top with fade, game plays below ── */
+        @media (max-width: 767px) {
+            #challenge-section {
+                height: 88vh;
+                min-height: 520px;
+                margin: 12px;
+            }
+            .challenge-content {
+                max-width: 100%;
+                padding: 18px 18px 0;
+                /* Soft white fade so canvas is visible below text */
+                background: linear-gradient(to bottom,
+                    rgba(255,255,255,1) 0%,
+                    rgba(255,255,255,0.97) 75%,
+                    rgba(255,255,255,0) 100%);
+                padding-bottom: 24px;
+            }
+            .challenge-title { font-size: clamp(16px, 4.5vw, 24px); margin-bottom: 6px; }
+            .challenge-desc { font-size: 11px; margin-bottom: 12px; max-width: 100%; }
+            .score-display { font-size: clamp(28px, 7vw, 44px); }
+            .locked-pill { font-size: 16px; padding: 9px 12px; gap: 7px; }
+            .contact-icon-btn { width: 40px; height: 40px; }
+            .contact-icon-btn svg { width: 16px; height: 16px; }
+        }
+
+        @media (max-width: 479px) {
+            #challenge-section { margin: 8px; height: 82vh; }
+            .challenge-content { padding: 14px 14px 0; padding-bottom: 20px; }
+            .challenge-title { font-size: clamp(15px, 4vw, 20px); }
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #111;
+            padding: 60px 20px 32px;
+        }
+        .footer-name {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: clamp(32px, 8vw, 100px);
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+        }
+        .footer-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #333;
+            padding-top: 24px;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        /* ── AI CHAT ── */
+        #ai-chat-btn {
+            position: fixed; bottom: 24px; left: 24px;
+            z-index: 200;
+            background: none; border: none;
+            cursor: pointer;
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+        #ai-chat-btn:hover { opacity: 1; }
+        #ai-chat-window {
+            position: fixed; bottom: 90px; left: 24px;
+            z-index: 200;
+            width: 320px;
+            background: #fff;
+            border: 2px solid #000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+        }
+        #ai-chat-window.open { display: flex; }
+        .chat-header {
+            background: #000;
+            color: #fff;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .chat-history {
+            height: 240px;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 13px;
+        }
+        .chat-msg { max-width: 85%; }
+        .chat-msg.bot { align-self: flex-start; }
+        .chat-msg.user { align-self: flex-end; background: #000; color: #fff; padding: 8px 12px; }
+        .chat-msg.bot .bubble { background: #f5f5f5; border: 1px solid #eee; padding: 8px 12px; font-size: 12px; line-height: 1.5; }
+        .chat-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #999; margin-bottom: 4px; }
+        .chat-input-row {
+            display: flex;
+            border-top: 1px solid #000;
+            padding: 10px;
+            gap: 8px;
+        }
+        .chat-input-row input {
+            flex: 1;
+            border: 1px solid #000;
+            padding: 8px 12px;
+            font-size: 12px;
+            outline: none;
+            font-family: inherit;
+        }
+        .chat-send {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-family: inherit;
+        }
+
+        /* ── CASE VIEW ── */
+        #view-case { background: #111; }
+        .case-slide img { display: block; width: 100%; height: auto; }
+        #case-minibar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            z-index: 200;
+            background: rgba(17,17,17,0.92);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: stretch;
+            height: 56px;
+        }
+        #case-minibar.visible { display: flex; }
+        .minibar-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            gap: 8px; color: #fff; font-size: 10px; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            border: none; background: transparent; cursor: pointer;
+            transition: background 0.15s;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            font-family: inherit;
+        }
+        .minibar-btn:last-child { border-right: none; }
+        .minibar-btn:hover { background: rgba(255,255,255,0.08); }
+
+        /* ── MOBILE NAV ── */
+        /* Desktop: Hide mobile menu and menu button */
+        @media (min-width: 768px) {
+            .menu-button { display: none !important; }
+            .nav-menu-mobile { display: none !important; }
+        }
+
+        @media (max-width: 767px) {
+            .nav-links-desktop { display: none !important; }
+            .menu-button { display: block !important; }
+            .nav-menu-mobile {
+                position: fixed; inset: 0; background: #fff;
+                z-index: 500; display: none;
+                flex-direction: column; padding: 80px 40px;
+                border-left: 1px solid #000;
+            }
+            .nav-menu-mobile.open { display: flex; }
+            .nav-menu-mobile a, .nav-menu-mobile button {
+                font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+                font-size: 28px; color: #000;
+                text-decoration: none; background: none; border: none;
+                cursor: pointer; border-bottom: 1px solid #000;
+                padding: 20px 0; letter-spacing: 0.05em;
+                display: block;
+            }
+            .about-grid { grid-template-columns: 1fr; gap: 32px; }
+            .services-carousel-container { max-width: 100%; height: 320px; margin: 40px auto 0; }
+            .carousel__face { width: 280px; height: 240px; margin-left: -140px; margin-top: -120px; }
+            .carousel__face h3 { font-size: 18px; margin-bottom: 10px; }
+            .carousel__face p { font-size: 11px; line-height: 16px; }
+            .face-content { padding: 20px 16px; }
+            .exp-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-meta { flex-direction: column; gap: 8px; text-align: center; }
+            .hero-section { min-height: 60vh; }
+        }
+        
+        /* Extra small screens - under 560px width */
+        @media (max-width: 559px) {
+            body { font-size: 13px; }
+            .navbar { margin: 0 12px; padding: 0 6px; }
+            .nav-link, .nav-link-last, .href, .lang-toggle {
+                font-size: 13px;
+                padding: 16px 0 12px;
+                margin: 0 10px;
+            }
+            .menu-button { font-size: 18px; padding: 16px 0 12px; }
+            .h2 { font-size: clamp(28px, 6vw, 48px); }
+            .hero-div { padding: 24px 0 32px; }
+            .hero-tags { gap: 6px; margin-top: 20px; }
+            .hero-tag { padding: 6px 14px; font-size: 10px; }
+            .general-div { margin: 0 12px; }
+            .general-section { background: #fff; }
+            .collection-item { padding: 16px 0 28px; }
+            .project-row { gap: 12px; flex-direction: column; }
+            .project-meta { gap: 10px; flex-wrap: wrap; }
+            .project-number { min-width: 28px; font-size: 10px; }
+            .project-title-text { font-size: clamp(16px, 2.5vw, 22px); }
+            .project-thumb { width: min(25vw, 300px); height: auto; }
+            .section-heading { font-size: clamp(24px, 4vw, 36px); margin-bottom: 20px; }
+            .about-grid { gap: 20px; padding: 32px 0; }
+            .about-text { font-size: 14px; line-height: 24px; }
+            .services-carousel-container { max-width: 100%; height: 300px; margin: 32px auto 0; }
+            .carousel__face { width: 260px; height: 220px; margin-left: -130px; margin-top: -110px; }
+            .carousel__face h3 { font-size: 16px; margin-bottom: 8px; }
+            .carousel__face p { font-size: 11px; line-height: 16px; }
+            .face-content { padding: 18px 14px; }
+            .sub-titles { font-size: 16px; padding: 16px 0; }
+            .carousel__slide { padding: 20px 16px; flex-direction: column; }
+            .carousel__slide figure { flex-direction: column; gap: 16px; }
+            .carousel__slide figure > div { flex: 1; min-width: unset; }
+            .carousel__slide .exp-title { font-size: 18px; }
+            .carousel__slide .exp-details { font-size: 12px; line-height: 18px; }
+            .carousel__thumbnails { margin: 20px -6px 0 -6px; }
+            .carousel__thumbnails li { margin: 0 6px; max-width: calc((100% / 6) - 12px); }
+            .carousel__thumbnails label { font-size: 11px; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 20px; }
+            #challenge-section { margin: 12px; padding: 32px 16px; }
+            .challenge-content { padding: 32px 16px; }
+            .challenge-title { font-size: clamp(24px, 4vw, 36px); margin-bottom: 12px; }
+            .challenge-desc { font-size: 13px; margin-bottom: 20px; }
+            .score-display { font-size: clamp(36px, 7vw, 60px); }
+            footer { padding: 40px 16px 28px; }
+            .footer-name { font-size: clamp(28px, 6vw, 60px); margin-bottom: 28px; }
+            .footer-meta { font-size: 9px; }
+        }
+        
+        @media (max-width: 479px) {
+            .general-div { margin: 0 10px; }
+            .navbar { margin: 0 8px; padding: 0 4px; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .project-row { flex-direction: column; }
+        }
+
+        /* ── SERVICES: desktop 3D / mobile flat ── */
+        /* Hide mobile slider on desktop, show 3D carousel */
+        .services-mobile-only { display: none; }
+        .services-desktop-only { display: block; }
+
+        /* MOBILE SWIPE SLIDER */
+        .services-mobile-slider {
+            margin-top: 32px;
+            width: 100%;
+        }
+        .services-mobile-track {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 4px;
+            /* Extend to bleed to edge for peek effect */
+            margin-left: -20px;
+            margin-right: -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .services-mobile-track::-webkit-scrollbar { display: none; }
+        .services-mobile-card {
+            flex: 0 0 calc(80vw - 32px);
+            max-width: 300px;
+            min-height: 180px;
+            scroll-snap-align: start;
+            border: 1px solid rgba(0,0,0,0.15);
+            background: #fff;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .services-mobile-card h3 {
+            font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 10px;
+            color: #000;
+            letter-spacing: 0.03em;
+        }
+        .services-mobile-card p {
+            font-size: 12px;
+            line-height: 18px;
+            color: #666;
+            margin: 0;
+        }
+        /* Dot indicators */
+        .services-mobile-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .services-mobile-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #d1d5db;
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+        .services-mobile-dot.active {
+            background: #000;
+            transform: scale(1.3);
+        }
+
+        @media (max-width: 767px) {
+            .services-mobile-only { display: block; }
+            .services-desktop-only { display: none !important; }
+        }
+
+        /* ── PREVENT HORIZONTAL OVERFLOW EVERYWHERE ── */
+        html, body { overflow-x: hidden; max-width: 100%; }
+
+        /* ── REVEAL ANIMATIONS ── */
+        .reveal {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.active { opacity: 1; transform: none; }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+
+<body class="lang-ru">
+
+<!-- ────────────────────────────────────────────────
+     NAVIGATION
+──────────────────────────────────────────────── -->
+<nav class="navbar">
+    <div style="display:flex; align-items:center;">
+        <span class="href" onclick="goHome()" style="cursor:pointer; margin-left:0;">
+            Alex Raduntsev
+        </span>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-en">RU</span>
+            <span class="lang-ru">EN</span>
+        </button>
+    </div>
+    <div class="nav-links-desktop" style="display:flex; align-items:center;">
+        <a class="nav-link" onclick="goHome(); setTimeout(()=>document.getElementById('projects-section').scrollIntoView({behavior:'smooth'}),100);" href="#">
+            <span class="lang-en">Projects</span><span class="lang-ru">Проекты</span>
+        </a>
+        <a class="nav-link" onclick="goHome(); setTimeout(()=>document.getElementById('about-section').scrollIntoView({behavior:'smooth'}),100);" href="#">
+            <span class="lang-en">About</span><span class="lang-ru">Обо мне</span>
+        </a>
+        <a class="nav-link-last" href="#challenge-section">
+            <span class="lang-en">Contact</span><span class="lang-ru">Контакты</span>
+        </a>
+    </div>
+    <button class="menu-button" onclick="toggleMobileMenu()">☰</button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="nav-menu-mobile" id="mobile-menu">
+    <a href="#" onclick="goHome(); closeMobileMenu(); setTimeout(()=>document.getElementById('projects-section').scrollIntoView({behavior:'smooth'}),100);">
+        <span class="lang-en">Projects</span><span class="lang-ru">Проекты</span>
+    </a>
+    <a href="#" onclick="goHome(); closeMobileMenu(); setTimeout(()=>document.getElementById('about-section').scrollIntoView({behavior:'smooth'}),100);">
+        <span class="lang-en">About</span><span class="lang-ru">Обо мне</span>
+    </a>
+    <a href="#challenge-section" onclick="closeMobileMenu()">
+        <span class="lang-en">Contact</span><span class="lang-ru">Контакты</span>
+    </a>
+    <button onclick="closeMobileMenu()" style="font-size:14px !important; color:#999 !important;">✕ Close</button>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     VIEW 1: HOME
+════════════════════════════════════════════════ -->
+<main id="view-home" class="view-active">
+
+    <!-- ── HERO ── -->
+    <section class="hero-section">
+        <img
+            src="https://i.ibb.co/SDMvssyF/A-highquality-studio-video-of-the-man-from-t.gif"
+            alt="background"
+            class="hero-bg"
+        >
+        <div class="hero-div general-div">
+            <h1 class="h2">
+                <span class="lang-en">Designer-developer</span>
+                <span class="lang-ru">Дизайнер-инженер</span>
+            </h1>
+            <div class="hero-tags">
+                <span class="hero-tag">UI/UX</span>
+                <span class="hero-tag">Figma</span>
+                <span class="hero-tag">HTML/CSS</span>
+                <span class="hero-tag">JavaScript</span>
+                <span class="hero-tag lang-ru">Брендинг</span>
+                <span class="hero-tag lang-en">Branding</span>
+                <span class="hero-tag lang-ru">Полиграфия</span>
+                <span class="hero-tag lang-en">Polygraphy</span>
+                <br>
+                <span class="hero-tag lang-ru">Типографика</span>
+                <span class="hero-tag lang-en">Typography</span>
+                <span class="hero-tag">Tailwind</span>
+                <span class="hero-tag lang-ru">Анимация</span>
+                <span class="hero-tag lang-en">Animation</span>
+                <span class="hero-tag">React</span>
+                <span class="hero-tag lang-ru">Адаптивность</span>
+                <span class="hero-tag lang-en">Responsive</span>
+                <span class="hero-tag lang-ru">3D-дизайн</span>
+                <span class="hero-tag lang-en">3D Design</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── PROJECTS LIST ── -->
+    <section class="general-section" id="projects-section">
+        <div class="general-div" style="padding-top:40px;">
+
+            <!-- Project 1 -->
+            <div class="collection-item reveal" onclick="openCase(1)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">01</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">ЗИН. Исследование классического канона верстки</span>
+                                <span class="lang-en">Zine. Study of Classic Layout Canon</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">Полиграфия</span>
+                                <span class="news-title lang-en">Print Design</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Дизайн изданий</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">Editorial Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/6R84SCdh/project-9.png" alt="Project 1" class="project-thumb kar1">
+                </div>
+                <img src="https://i.ibb.co/6R84SCdh/project-9.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+            <!-- Project 2 -->
+            <div class="collection-item reveal delay-1" onclick="openCase(2)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">02</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">Брендинг школы английского языка</span>
+                                <span class="lang-en">English School Branding</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">Айдентика</span>
+                                <span class="news-title lang-en">Identity</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Веб-дизайн</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">Web Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/4g21mXtg/project-11.png" alt="Project 2" class="project-thumb">
+                </div>
+                <img src="https://i.ibb.co/4g21mXtg/project-11.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+            <!-- Project 3 -->
+            <div class="collection-item reveal delay-2" onclick="openCase(3)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">03</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">ПЭТ-проект. Аренда книг</span>
+                                <span class="lang-en">Pet Project. Book Rental</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">Айдентика</span>
+                                <span class="news-title lang-en">Identity</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Вёрстка</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">CRM Redesign</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/nq9sLxPg/project-15.png" alt="Project 3" class="project-thumb">
+                </div>
+                <img src="https://i.ibb.co/nq9sLxPg/project-15.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+            <!-- Project 4 -->
+            <div class="collection-item reveal" onclick="openCase(4)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">04</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">Редизайн. CRM-система</span>
+                                <span class="lang-en">Redesign. CRM System</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">Веб-дизайн</span>
+                                <span class="news-title lang-en">Web Design</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Вёрстка</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">Branding</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/B5K7bmK2/project-13.png" alt="Project 4" class="project-thumb">
+                </div>
+                <img src="https://i.ibb.co/B5K7bmK2/project-13.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+            <!-- Project 5 -->
+            <div class="collection-item reveal delay-1" onclick="openCase(5)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">05</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">Скрипт для генерации полей изданий вне стандартных размеров</span>
+                                <span class="lang-en">Script for Non-Standard Publication Margin Generation</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">Программирование</span>
+                                <span class="news-title lang-en">Programming</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Дизайн изданий</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">3D & Motion</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/9kvQ170q/project-10.png" alt="Project 5" class="project-thumb">
+                </div>
+                <img src="https://i.ibb.co/9kvQ170q/project-10.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+            <!-- Project 6 -->
+            <div class="collection-item reveal delay-2" onclick="openCase(6)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">06</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">ИИ-генеративные проекты</span>
+                                <span class="lang-en">AI-Generative Projects</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">ИИ-генерация</span>
+                                <span class="news-title lang-en">AI Generation</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Брендинг</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">Editorial Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/C5v0vzGw/project-14.png" alt="Project 6" class="project-thumb">
+                </div>
+                <img src="https://i.ibb.co/C5v0vzGw/project-14.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+             <!-- Project 7 -->
+            <div class="collection-item reveal" onclick="openCase(7)">
+                <div class="project-row">
+                    <div class="project-meta">
+                        <span class="project-number">07</span>
+                        <div>
+                            <div class="project-title-text">
+                                <span class="lang-ru">WordPress</span>
+                                <span class="lang-en">WordPress</span>
+                            </div>
+                            <div style="margin-top:6px;">
+                                <span class="news-title lang-ru">Веб-дизайн</span>
+                                <span class="news-title lang-en">Web Design</span>
+                                <span class="news-title lang-ru" style="margin-left:6px;">Программирование</span>
+                                <span class="news-title lang-en" style="margin-left:6px;">AI Production</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://i.ibb.co/chz93WBD/project-12.png" alt="Project 7" class="project-thumb">
+                </div>
+                <img src="https://i.ibb.co/chz93WBD/project-12.png" alt="" class="project-thumb-mobile" loading="lazy">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section class="general-section" id="about-section" style="padding-top:20px;">
+        <div class="general-div">
+            <h2 class="section-heading reveal" style="padding-top:40px; border-top:1px solid #000;">
+                <span class="lang-en">Hi, I'm<br>Alex Raduntsev.</span>
+                <span class="lang-ru">Привет, я<br>Алексей Радунцев.</span>
+            </h2>
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <span class="lang-ru">
+                        Веб-дизайнер с инженерным бэкграундом. Занимаюсь проектированием интерфейсов и вёрсткой: от прототипов в Figma до Tilda или чистом коде (HTML/CSS/JS).
+
+Натренирован старожилами газетной редакции "Пентаграмм" и уже не страшно браться за самые безумные проекты. Съел собаку в полиграфии, но и от графики немного откусил: от логотипов до многостраничной верстки изданий. На короткой ноге с Blender для работы с 3D - бублики и машинные редукторы. Работаю по Kanban, отдыхаю по AGILE. Есть пустой телеграмм канал - состаривается для пущей важности, чтоб каждый пост был как бокал бургунского.
+                    </span>
+                    <span class="lang-en">
+                        Web designer and developer from Russia. I create functional websites and visual systems — from concept to launch. I work at the intersection of design and code.
+                    </span>
+                    <div style="margin-top:28px; display:flex; flex-wrap:wrap; gap:8px;">
+                        <span class="news-title">Figma</span>
+                        <span class="news-title">Blender</span>
+                        <span class="news-title">WordPress</span>
+                        <span class="news-title">Tilda</span>
+                        <span class="news-title">HTML/CSS/JS</span>
+                        <span class="news-title">InDesign</span>
+                        <span class="news-title">Taplink</span>
+                    </div>
+                </div>
+                <div class="reveal delay-2">
+                    <div style="border-top:1px solid #000; padding-top:20px;">
+                        <span class="lang-ru" style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:#999; font-weight:700;">Интересы вне работы</span>
+                        <span class="lang-en" style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:#999; font-weight:700;">Off-work interests</span>
+                        <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+                            <span class="news-title lang-ru">Спелеология</span>
+                            <span class="news-title lang-en">Speleology</span>
+                            <span class="news-title lang-ru">Резьба по дереву</span>
+                            <span class="news-title lang-en">Wood carving</span>
+                            <span class="news-title lang-ru">Фотография</span>
+                            <span class="news-title lang-en">Photography</span>
+                        </div>
+                    </div>
+                    <div style="border-top:1px solid #000; padding-top:20px; margin-top:28px;">
+                        <span class="lang-ru" style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:#999; font-weight:700;">Связь</span>
+                        <span class="lang-en" style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:#999; font-weight:700;">Connect</span>
+                        <div style="margin-top:12px;">
+                            <a href="https://www.instagram.com/raduncalek/" target="_blank" style="display:block; color:#000; font-size:14px; letter-spacing:0.1em; text-decoration:none; padding:4px 0; border-bottom:1px solid transparent; transition:border-color 0.2s;" onmouseover="this.style.borderColor='#000'" onmouseout="this.style.borderColor='transparent'">@raduncalek ↗</a>
+                            <a href="https://t.me/aleraduga" target="_blank" style="display:block; color:#000; font-size:14px; letter-spacing:0.1em; text-decoration:none; padding:4px 0; border-bottom:1px solid transparent; transition:border-color 0.2s;" onmouseover="this.style.borderColor='#000'" onmouseout="this.style.borderColor='transparent'">Telegram ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SERVICES ── -->
+    <section class="general-section" style="padding-top:20px; padding-bottom:40px;">
+        <div class="general-div">
+            <h2 class="section-heading reveal" style="padding-top:40px; border-top:1px solid #000;">
+                <span class="lang-en">How I can<br>help you</span>
+                <span class="lang-ru">Как я могу<br>вам помочь</span>
+            </h2>
+
+            <!-- DESKTOP: 3D rotating carousel -->
+            <div class="services-carousel-container reveal services-desktop-only">
+                <div class="services-carousel">
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">Веб-дизайн</span><span class="lang-en">Web Design</span></h3><p><span class="lang-ru">HTML, CSS, JS, Figma, Tilda</span><span class="lang-en">HTML, CSS, JS, Figma, Tilda</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">Разработка</span><span class="lang-en">Development</span></h3><p><span class="lang-ru">WordPress, React, Taplink</span><span class="lang-en">WordPress, React, Taplink</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">Графический дизайн</span><span class="lang-en">Graphic Design</span></h3><p><span class="lang-ru">Логотипы, айдентика, полиграфия</span><span class="lang-en">Logos, identity, printing</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">3D & Моушн</span><span class="lang-en">3D & Motion</span></h3><p><span class="lang-ru">Blender, After Effects, анимация</span><span class="lang-en">Blender, After Effects, animation</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">ИИ-контент</span><span class="lang-en">AI Content</span></h3><p><span class="lang-ru">Нейросети, генерация, визуализация</span><span class="lang-en">Neural networks, generation, viz</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">Инфографика</span><span class="lang-en">Infographics</span></h3><p><span class="lang-ru">Маркетплейсы, презентации, брошюры</span><span class="lang-en">Marketplaces, presentations, brochures</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">Менеджмент</span><span class="lang-en">Management</span></h3><p><span class="lang-ru">Miro, Notion, Jira, Agile/Kanban</span><span class="lang-en">Miro, Notion, Jira, Agile/Kanban</span></p></div></div>
+                    <div class="carousel__face"><div class="face-content"><h3><span class="lang-ru">Брендинг</span><span class="lang-en">Branding</span></h3><p><span class="lang-ru">Стратегия, визуальные системы, гайды</span><span class="lang-en">Strategy, visual systems, guides</span></p></div></div>
+                </div>
+            </div>
+
+            <!-- MOBILE: flat swipe slider -->
+            <div class="services-mobile-slider reveal services-mobile-only">
+                <div class="services-mobile-track" id="services-mobile-track">
+                    <div class="services-mobile-card"><h3><span class="lang-ru">Веб-дизайн</span><span class="lang-en">Web Design</span></h3><p><span class="lang-ru">HTML, CSS, JS, Figma, Tilda</span><span class="lang-en">HTML, CSS, JS, Figma, Tilda</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">Разработка</span><span class="lang-en">Development</span></h3><p><span class="lang-ru">WordPress, React, Taplink</span><span class="lang-en">WordPress, React, Taplink</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">Графический дизайн</span><span class="lang-en">Graphic Design</span></h3><p><span class="lang-ru">Логотипы, айдентика, полиграфия</span><span class="lang-en">Logos, identity, printing</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">3D & Моушн</span><span class="lang-en">3D & Motion</span></h3><p><span class="lang-ru">Blender, After Effects, анимация</span><span class="lang-en">Blender, After Effects, animation</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">ИИ-контент</span><span class="lang-en">AI Content</span></h3><p><span class="lang-ru">Нейросети, генерация, визуализация</span><span class="lang-en">Neural networks, generation, viz</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">Инфографика</span><span class="lang-en">Infographics</span></h3><p><span class="lang-ru">Маркетплейсы, презентации, брошюры</span><span class="lang-en">Marketplaces, presentations, brochures</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">Менеджмент</span><span class="lang-en">Management</span></h3><p><span class="lang-ru">Miro, Notion, Jira, Agile/Kanban</span><span class="lang-en">Miro, Notion, Jira, Agile/Kanban</span></p></div>
+                    <div class="services-mobile-card"><h3><span class="lang-ru">Брендинг</span><span class="lang-en">Branding</span></h3><p><span class="lang-ru">Стратегия, визуальные системы, гайды</span><span class="lang-en">Strategy, visual systems, guides</span></p></div>
+                </div>
+                <!-- Dots -->
+                <div class="services-mobile-dots" id="services-mobile-dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── EXPERIENCE ── -->
+    <section class="general-section" style="padding-top:20px; padding-bottom:20px;">
+        <div class="general-div">
+            <h2 class="section-heading reveal" style="padding-top:40px; border-top:1px solid #000;">
+                <span class="lang-en">Experience</span>
+                <span class="lang-ru">Опыт</span>
+            </h2>
+            
+            <div class="carousel reveal">
+                <input type="radio" name="exp-slides" checked="checked" id="exp-slide-1">
+                <input type="radio" name="exp-slides" id="exp-slide-2">
+                <input type="radio" name="exp-slides" id="exp-slide-3">
+                <input type="radio" name="exp-slides" id="exp-slide-4">
+                <input type="radio" name="exp-slides" id="exp-slide-5">
+                <input type="radio" name="exp-slides" id="exp-slide-6">
+                
+                <ul class="carousel__slides">
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                            <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
+                        </div>
+                            <figcaption>
+                                <div class="exp-year">2023</div>
+                                <div class="exp-title">
+                                    <strong>
+                                        <span class="lang-ru">Дизайнер-преподаватель</span>
+                                        <span class="lang-en">Designer-Teacher</span>
+                                    </strong>
+                                    <br>
+                                    <span class="lang-ru">Независимый специалист</span>
+                                    <span class="lang-en">Independent</span>
+                                </div>
+                                <div class="exp-details">
+                                    <span class="lang-ru">Обучение студентов основам графического и веб-дизайна. Подготовка методических материалов и учебных программ.</span>
+                                    <span class="lang-en">Teaching students fundamentals of graphic and web design. Preparing methodological materials and curricula.</span>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                            <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
+                        </div>
+                            <figcaption>
+                                <div class="exp-year">2023–2024</div>
+                                <div class="exp-title">
+                                    <strong>ECT center</strong>
+                                    <br>
+                                    <span class="lang-ru">Проджект-менеджер</span>
+                                    <span class="lang-en">Project Manager</span>
+                                </div>
+                                <div class="exp-details">
+                                    <span class="lang-ru">Управление процессами: Контроль сроков и качества реализации технических задач.<br>Методологии: Работа по Agile и Kanban, координация взаимодействия между заказчиком и исполнителями.</span>
+                                    <span class="lang-en">Process management: Monitoring deadlines and quality of technical task implementation.<br>Methodologies: Working with Agile and Kanban, coordinating between client and executors.</span>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                                <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
+                            </div>
+                            <figcaption>
+                                <div class="exp-year">2024</div>
+                                <div class="exp-title">
+                                    <strong>Aquatoria</strong>
+                                    <br>
+                                    <span class="lang-ru">Стажер в PR-отделе</span>
+                                    <span class="lang-en">PR Intern</span>
+                                </div>
+                                <div class="exp-details">
+                                    <span class="lang-ru">Верстка материалов: Подготовка презентаций и информационных брошюр.<br>Поддержка коммуникаций: Участие в разработке визуальной составляющей PR-кампаний.</span>
+                                    <span class="lang-en">Layout design: Preparing presentations and information brochures.<br>Communication support: Participating in visual development of PR campaigns.</span>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                                <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
+                            </div>
+                            <figcaption>
+                                <div class="exp-year">2025</div>
+                                <div class="exp-title">
+                                    <strong>Cybermisha</strong>
+                                    <br>
+                                    <span class="lang-ru">Дизайнер контента</span>
+                                    <span class="lang-en">Content Designer</span>
+                                </div>
+                                <div class="exp-details">
+                                    <span class="lang-ru">Визуальный контент: Проектирование графических материалов и инфографики для цифровых платформ.<br>Работа с ИИ: Применение нейросетей для генерации и обработки визуальных ассетов.</span>
+                                    <span class="lang-en">Visual content: Designing graphic materials and infographics for digital platforms.<br>AI implementation: Using neural networks to generate and process visual assets.</span>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                                <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
+                            </div>
+                            <figcaption>
+                                <div class="exp-year" style="color:#999;">
+                                    <span class="lang-ru">2025 — н.в.</span>
+                                    <span class="lang-en">2025 — Present</span>
+                                </div>
+                                <div class="exp-title">
+                                    <strong>EngAtmo</strong>
+                                    <br>
+                                    <span class="lang-ru">Джуниор дизайнер</span>
+                                    <span class="lang-en">Junior Designer</span>
+                                </div>
+                                <div class="exp-details">
+                                    <span class="lang-ru">Проектирование систем: Разработка архитектуры и визуальных гайдлайнов для образовательных платформ (Miro).<br>Веб-разработка & Брендинг: Дизайн и сборка сайта-визитки. Редизайн айдентики и оформление контента.</span>
+                                    <span class="lang-en">Systems design: Architecture and visual guidelines for educational platforms (Miro).<br>Web Dev & Branding: Design and build of portfolio site. Identity redesign and content formatting.</span>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                                <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
+                            </div>
+                            <figcaption>
+                                <div class="exp-title">
+                                    <strong>
+                                        <span class="lang-ru">Навыки и инструменты</span>
+                                        <span class="lang-en">Skills & Tools</span>
+                                    </strong>
+                                </div>
+                                <div class="exp-details">
+                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px; font-size:16px;">
+                                        <div>
+                                            <p style="font-size:16px; line-height:1.8; color:#555; margin:0;">
+                                                Design:Figma, Adobe XD, Sketch<br>
+                                                3D & Motion: Blender, After Effects<br>
+                                                Publishing: InDesign, Figma
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p style="font-size:16px; line-height:1.8; color:#555; margin:0;">
+                                                Web: HTML/CSS/JS, React<br>
+                                                Platforms: WordPress, Tilda, Taplink<br>
+                                                AI: Neural Networks, Generative Tools
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </li>
+                </ul>
+                
+                <ul class="carousel__thumbnails">
+                    <li><label for="exp-slide-1">2023</label></li>
+                    <li><label for="exp-slide-2">2023-<br>2024</label></li>
+                    <li><label for="exp-slide-3">2024</label></li>
+                    <li><label for="exp-slide-4">2025</label></li>
+                    <li><label for="exp-slide-5">2025-<br>н.в.</label></li>
+                    <li><label for="exp-slide-6">навыки</label></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── PHOTOGRAPHY GALLERY ── -->
+    <section class="general-section" style="padding-bottom:20px;">
+        <div class="general-div">
+            <div style="border-top:1px solid #000; padding-top:20px; display:flex; justify-content:space-between; align-items:center;">
+                <span class="sub-titles" style="border:none; padding:0;">
+                    <span class="lang-ru">Фотография</span>
+                    <span class="lang-en">Photography</span>
+                </span>
+                <a href="https://www.instagram.com/raduncalek/" target="_blank" style="font-size:12px; color:#666; letter-spacing:0.1em; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#000'" onmouseout="this.style.color='#666'">
+                    @raduncalek ↗
+                </a>
+            </div>
+            <div class="gallery-grid reveal">
+                <div class="gallery-item" onclick="openGalleryLightbox(0)">
+                    <img src="https://i.ibb.co/hRgcCPqF/1.png" alt="Photo 1">
+                    <div class="gallery-overlay"><span class="lang-ru">Смотреть</span><span class="lang-en">View</span></div>
+                </div>
+                <div class="gallery-item" onclick="openGalleryLightbox(1)">
+                    <img src="https://i.ibb.co/gbwhhSzr/2.png" alt="Photo 2">
+                    <div class="gallery-overlay"><span class="lang-ru">Смотреть</span><span class="lang-en">View</span></div>
+                </div>
+                <div class="gallery-item" onclick="openGalleryLightbox(2)">
+                    <img src="https://i.ibb.co/JRySpbsL/3.jpg" alt="Photo 3">
+                    <div class="gallery-overlay"><span class="lang-ru">Смотреть</span><span class="lang-en">View</span></div>
+                </div>
+                <div class="gallery-item" onclick="openGalleryLightbox(3)">
+                    <img src="https://i.ibb.co/84KGr3Pv/4.png" alt="Photo 4">
+                    <div class="gallery-overlay"><span class="lang-ru">Смотреть</span><span class="lang-en">View</span></div>
+                </div>
+                <div class="gallery-item" onclick="openGalleryLightbox(4)">
+                    <img src="https://i.ibb.co/VYXbLsr0/5.png" alt="Photo 5">
+                    <div class="gallery-overlay"><span class="lang-ru">Смотреть</span><span class="lang-en">View</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Lightbox -->
+    <div id="gallery-lightbox" onclick="closeGalleryLightbox(event)">
+        <button onclick="prevGalleryImage()" style="position:absolute;left:24px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:36px;cursor:pointer;z-index:10;">‹</button>
+        <img id="lightbox-image" src="" alt="">
+        <button onclick="nextGalleryImage()" style="position:absolute;right:24px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:36px;cursor:pointer;z-index:10;">›</button>
+        <button onclick="closeGalleryLightbox()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;z-index:10;">✕</button>
+        <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:#666;font-size:12px;font-weight:700;letter-spacing:0.2em;">
+            <span id="lightbox-counter">1 / 5</span>
+        </div>
+    </div>
+
+    <!-- ── BASKETBALL / CONTACT ── -->
+    <section id="challenge-section">
+        <div id="basketball-wrapper"></div>
+
+        <div class="challenge-content">
+            <!-- Score -->
+            <div id="score-counter" class="score-display">0</div>
+            <div class="score-label">
+                <span class="lang-ru">Счёт</span><span class="lang-en">Score</span>
+            </div>
+
+            <h2 class="challenge-title">
+                <span class="lang-ru">Докажите, что вы человек</span>
+                <span class="lang-en">Prove you're human</span>
+            </h2>
+            <p class="challenge-desc">
+                <span class="lang-ru">Забросьте мяч в корзину один раз, чтобы получить доступ к моим контактам (можно просто взять и перетащить в корзину).</span>
+                <span class="lang-en">Throw the ball into the hoop once to get access to my contacts (you can just grab and drag it into the basket).</span>
+            </p>
+
+            <div id="locked-ui" class="locked-pill">
+                <span>🏀</span>
+                <span>
+                    <span class="lang-ru">Хватайте мяч мышкой →</span>
+                    <span class="lang-en">Grab the ball with mouse →</span>
+                </span>
+            </div>
+
+            <div id="unlocked-content">
+                <div>
+                    <div class="contact-icons">
+                        <!-- Telegram -->
+                        <a href="https://t.me/aleraduga" target="_blank" class="contact-icon-btn" title="Telegram">
+                            <img src="https://i.ibb.co/rR1rGbTz/telegram-icon-131945.png" alt="Telegram" width="28" height="28" style="object-fit:contain;">
+                        </a>
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/raduncalek/" target="_blank" class="contact-icon-btn" title="Instagram">
+                            <img src="https://i.ibb.co/WNVgxrBz/instagram-logo-icon-173753.png" alt="Instagram" width="28" height="28" style="object-fit:contain;">
+                        </a>
+                        <!-- Behance -->
+                        <a href="https://www.behance.net/alexraduntsev" target="_blank" class="contact-icon-btn" title="Behance">
+                            <img src="https://i.ibb.co/7xcdH31S/behance-logo-icon-189229.png" alt="Behance" width="28" height="28" style="object-fit:contain;">
+                        </a>
+                        <!-- Gmail -->
+                        <a href="mailto:alex@raduntsev.ru" class="contact-icon-btn" title="Gmail">
+                            <img src="https://i.ibb.co/rRJBk9Vg/gmail-icon-137543.png" alt="Gmail" width="28" height="28" style="object-fit:contain;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- /#view-home -->
+
+
+<!-- ════════════════════════════════════════════════
+     VIEW 2: CASE / PROJECT
+════════════════════════════════════════════════ -->
+<main id="view-case" class="view-hidden" style="padding-bottom:56px; background:#111;">
+    <section id="case-slider-section">
+        <div id="case-slides-container"></div>
+    </section>
+</main>
+
+
+<!-- ────────────────────────────────────────────────
+     CASE MINIBAR
+──────────────────────────────────────────────── -->
+<div id="case-minibar">
+    <button class="minibar-btn" onclick="prevCase()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <span class="lang-ru">Предыдущий</span><span class="lang-en">Prev</span>
+    </button>
+    <button class="minibar-btn" onclick="goHome()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>
+        <span class="lang-ru">Главная</span><span class="lang-en">Home</span>
+    </button>
+    <button class="minibar-btn" onclick="nextCase()">
+        <span class="lang-ru">Следующий</span><span class="lang-en">Next</span>
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+</div>
+
+
+<!-- ────────────────────────────────────────────────
+     FOOTER
+──────────────────────────────────────────────── -->
+<footer>
+    <div class="footer-name">Alex Raduntsev</div>
+    <div class="footer-meta" style="margin:0 8px;">
+        <span style="color:rgba(255,255,255,0.3);">© 2026</span>
+        <span>
+            <span class="lang-ru">Системный дизайн и инженерия</span>
+            <span class="lang-en">System Design &amp; Engineering</span>
+        </span>
+        <span>
+            <span class="lang-ru">Россия</span>
+            <span class="lang-en">Based in Russia</span>
+        </span>
+    </div>
+</footer>
+
+
+<!-- ────────────────────────────────────────────────
+     AI CHAT
+──────────────────────────────────────────────── -->
+<button id="ai-chat-btn" onclick="toggleChat()">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <circle cx="12" cy="4.5" r="2.5"/>
+        <rect x="9.5" y="8" width="5" height="8"/>
+        <path d="M9.5 8.5 L5 2.5 L3 4 L7.5 10 Z"/>
+        <path d="M14.5 8.5 L19.5 13 L17.5 15 L12.5 10.5 Z"/>
+        <rect x="9.5" y="16" width="2" height="7"/>
+        <rect x="12.5" y="16" width="2" height="7"/>
+    </svg>
+</button>
+
+<div id="ai-chat-window">
+    <div class="chat-header">
+        <span>✨ <span class="lang-ru">AI Ассистент</span><span class="lang-en">AI Assistant</span></span>
+        <button onclick="toggleChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:18px;line-height:1;">&times;</button>
+    </div>
+    <div class="chat-history" id="chat-history">
+        <div class="chat-msg bot">
+            <div class="chat-label"><span class="lang-ru">Ассистент</span><span class="lang-en">Assistant</span></div>
+            <div class="bubble">
+                <span class="lang-ru">Привет! Я цифровой помощник Алекса. Могу рассказать о его опыте, стеке технологий или условиях сотрудничества. Задавайте вопросы!</span>
+                <span class="lang-en">Hi! I'm Alex's digital assistant. I can tell you about his experience, tech stack, or collaboration terms. Ask away!</span>
+            </div>
+        </div>
+    </div>
+    <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Спросить о проектах..." onkeypress="handleChatEnter(event)">
+        <button class="chat-send" onclick="sendChatMessage()">
+            <span class="lang-ru">↑</span><span class="lang-en">↑</span>
+        </button>
+    </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════ -->
+<script>
+// ── LANGUAGE TOGGLE ──
+let currentLang = 'ru';
+function toggleLanguage() {
+    if (currentLang === 'ru') {
+        currentLang = 'en';
+        document.body.classList.replace('lang-ru', 'lang-en');
+        document.getElementById('chat-input').placeholder = "Ask about projects...";
+    } else {
+        currentLang = 'ru';
+        document.body.classList.replace('lang-en', 'lang-ru');
+        document.getElementById('chat-input').placeholder = "Спросить о проектах...";
+    }
+}
+
+// ── MOBILE MENU ──
+function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+function closeMobileMenu()  { document.getElementById('mobile-menu').classList.remove('open'); }
+
+// ── SPA ──
+const viewHome = document.getElementById('view-home');
+const viewCase = document.getElementById('view-case');
+let currentProjectId = null;
+
+function goHome() {
+    viewCase.classList.replace('view-active','view-hidden');
+    viewHome.classList.replace('view-hidden','view-active');
+    document.getElementById('case-minibar').classList.remove('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const projects = [
+    { id:1,
+      titleRu:'ЗИН. Исследование классического канона верстки', titleEn:'Zine. Study of Classic Layout Canon',
+      catRu:'Полиграфия. Дизайн изданий', catEn:'Print Design & Editorial',
+      heroImg:'https://i.ibb.co/fsPxQy0/project-01.jpg',
+      imgs:[
+                "https://i.ibb.co/d0QdZ7cH/Slice-2.jpg",
+                "https://i.ibb.co/3ycGWB85/Slice-3.jpg",
+                "https://i.ibb.co/cj3sqyb/Slice-4.jpg",
+                "https://i.ibb.co/whmc42cN/Slice-4-2.gif",
+                "https://i.ibb.co/mCXtrkVM/Slice-5.png",
+                "https://i.ibb.co/pjjHWgyF/Slice-6.jpg",
+                "https://i.ibb.co/5gDmgjs7/Slice-7.jpg",
+                "https://i.ibb.co/7xh3tq4v/Slice-8.png",
+                "https://i.ibb.co/vvRcBtbJ/Slice-8-1.gif",
+                "https://i.ibb.co/QFHk1b4j/Slice-8-2.jpg",
+                "https://i.ibb.co/1tLjWxJK/Slice-9.png",
+                "https://i.ibb.co/tp4dbCCY/Slice-10.gif",
+                "https://i.ibb.co/Z6tRhF11/Slice-11.jpg",
+                "https://i.ibb.co/RGdPbfm2/Slice-12.gif",
+                "https://i.ibb.co/G3P9Dhp9/Slice-13.jpg",
+                "https://i.ibb.co/7xfYkxMQ/Slice-14.gif",
+                "https://i.ibb.co/WNR1nsnj/Slice-15.gif",
+                "https://i.ibb.co/gZ8Y9677/Slice-16.gif",
+                "https://i.ibb.co/M5fW8sBS/Slice-17.gif"
+
+            ],
+      descRu:'Разработка визуальных гайдлайнов и архитектуры системы обучения. Комплексный редизайн корпоративной айдентики и верстка интерактивного сайта-визитки.',
+      descEn:'Development of visual guidelines and learning system architecture. Comprehensive redesign of corporate identity and interactive business card website layout.',
+      roleRu:'Ведущий дизайнер', roleEn:'Lead Designer' },
+    { id:2,
+      titleRu:'Брендинг школы английского языка', titleEn:'English School Branding',
+      catRu:'Айдентика. Веб-дизайн', catEn:'UX/UI & Architecture',
+      heroImg:'https://i.ibb.co/N6bkrCxr/project-02.jpg',
+      imgs:[
+                "https://i.ibb.co/rGzL4cN1/gifme.gif",
+                "https://i.ibb.co/bgV5vTp2/caution.png",
+                "https://i.ibb.co/845GFHXd/Slice-10.png",
+                "https://i.ibb.co/Fqdm6qHp/Slice-11.png",
+                "https://i.ibb.co/qMCB5j0T/Slice-12.png",
+                "https://i.ibb.co/Psnxj6WT/Slice-13.png",
+                "https://i.ibb.co/QvtHGmYq/Slice-14.png",
+                "https://i.ibb.co/8gvXBv0Z/Slice-15.png",
+                "https://i.ibb.co/ksZXspkr/Slice-16.png",
+                "https://i.ibb.co/kV2Kk7zC/Slice-17.png"
+            ],
+      descRu:'Создание визуальных концептов и UX/UI дизайн сложных веб-приложений. Глубокий анализ пользовательского опыта и построение логики взаимодействия.',
+      descEn:'Creating visual concepts and UX/UI design of complex web applications. Deep analysis of user experience and interaction logic.',
+      roleRu:'UX/UI Инженер', roleEn:'UX/UI Engineer' },
+    { id:3,
+      titleRu:'ПЭТ-проект. Аренда книг', titleEn:'Pet Project. Book Rental',
+      catRu:'Айдентика. Вёрстка', catEn:'CRM Redesign',
+      heroImg:'https://i.ibb.co/Y4KVDjbR/project-03.jpg',
+      imgs:[
+                "https://i.ibb.co/rGzL4cN1/gifme.gif"
+            ],
+      descRu:'Редизайн интерфейсов CRM-систем. Улучшение читабельности таблиц, оптимизация пользовательских путей и внедрение дизайн-системы.',
+      descEn:'Redesign of CRM system interfaces. Improving table readability, optimizing user flows, and implementing a design system.',
+      roleRu:'Продуктовый дизайнер', roleEn:'Product Designer' },
+    { id:4,
+      titleRu:'Редизайн. CRM-система', titleEn:'Redesign. CRM System',
+      catRu:'Веб-дизайн. Вёрстка', catEn:'Branding & Identity',
+      heroImg:'https://i.ibb.co/TBXPhYWz/project-04.jpg',
+      imgs:[
+                "https://i.ibb.co/rGzL4cN1/gifme.gif",
+                "https://i.ibb.co/bgV5vTp2/caution.png",
+                "https://i.ibb.co/JXy0mCW/Slice-0.jpg",
+                "https://i.ibb.co/zdXQJ84/Slice-1.jpg",
+                "https://i.ibb.co/NdWkPB9F/Slice-2.jpg",
+                "https://i.ibb.co/kg7H7pJm/Slice-3.jpg",
+                "https://i.ibb.co/V0hZ6qgC/Slice-4.jpg",
+                "https://i.ibb.co/TxmCRcpq/Slice-5.jpg",
+                "https://i.ibb.co/93VwKYHT/Slice-6.jpg"
+            ],
+      descRu:'Разработка логотипов, айдентики и наружной рекламы. Полный цикл от скетчей до подготовки макетов в печать.',
+      descEn:'Development of logos, identity, and outdoor advertising. Full cycle from sketches to print preparation.',
+      roleRu:'Арт-директор', roleEn:'Art Director' },
+    { id:5,
+      titleRu:'Скрипт для генерации полей изданий вне стандартных размеров', titleEn:'Script for Non-Standard Margin Generation',
+      catRu:'Программирование. Дизайн изданий', catEn:'3D Modeling & Motion',
+      heroImg:'https://i.ibb.co/yBMcJMk9/project-05-v1.jpg',
+      imgs:[
+                "https://i.ibb.co/rGzL4cN1/gifme.gif",
+                "https://i.ibb.co/bgV5vTp2/caution.png",
+                "https://i.ibb.co/K806Qvv/lirics-in-text.gif",
+                "https://i.ibb.co/B5qbWxK8/preview-1-1.png",
+                "https://i.ibb.co/n8snRGHY/Slide-2.png",
+                "https://i.ibb.co/0yPV4YFk/Slide-3.png",
+                "https://i.ibb.co/wN0nXBNk/Slide-4.png",
+                "https://i.ibb.co/JjdQWmXH/pages-1-1.gif",
+                "https://i.ibb.co/DnkDs5V/slide-1-2.gif",
+                "https://i.ibb.co/nq3Vb7rH/slide-2-1.gif",
+                "https://i.ibb.co/nq3Vb7rH/slide-2-1.gif",
+                "https://i.ibb.co/K806Qvv/lirics-in-text.gif",
+                "https://i.ibb.co/GvzpNXY6/Slide-9.png"
+            ],
+      descRu:'Создание 3D-объектов, детализированных механизмов и анимаций для интеграции в веб-интерфейсы. Использование Blender и After Effects.',
+      descEn:'Creating 3D objects, detailed mechanisms, and animations for web interface integration. Using Blender and After Effects.',
+      roleRu:'3D Моушн-дизайнер', roleEn:'3D Motion Designer' },
+    { id:6,
+      titleRu:'ИИ-генеративные проекты', titleEn:'AI-Generative Projects',
+      catRu:'ИИ-генерация. Брендинг. Полиграфия', catEn:'Editorial Design',
+      heroImg:'https://i.ibb.co/tPCTJ59t/project-06.jpg',
+      imgs:[
+                "https://i.ibb.co/rGzL4cN1/gifme.gif",
+                "https://i.ibb.co/bgV5vTp2/caution.png",
+                "https://i.ibb.co/ymgnrGFN/preview-3.jpg",
+                "https://i.ibb.co/9mXGnRKY/preview-4.jpg",
+                "https://i.ibb.co/5WxMcysT/preview-5.jpg",
+                "https://i.ibb.co/BVM1hkdH/preview-6.jpg",
+                "https://i.ibb.co/4wP2jrtg/preview-7.jpg",
+                "https://i.ibb.co/GfHFnC4x/preview-8.jpg",
+                "https://i.ibb.co/JWdQm1Rm/preview-512.jpg",
+                "https://i.ibb.co/yMbZThc/preview-4123.jpg"
+            ],
+      descRu:'Профессиональная верстка книг, брошюр и альбомов. Работа с сетками, типографикой и подготовка к офсетной печати.',
+      descEn:'Professional layout of books, brochures, and albums. Working with grids, typography, and preparing for offset printing.',
+      roleRu:'Дизайнер-верстальщик', roleEn:'Editorial Designer' },
+    { id:7,
+      titleRu:'WordPress', titleEn:'WordPress',
+      catRu:'Веб-дизайн. Программирование', catEn:'AI Production',
+      heroImg:'https://i.ibb.co/HTzqJLKd/project-07.jpg',
+      imgs:[
+                "https://i.ibb.co/rGzL4cN1/gifme.gif",
+                "https://i.ibb.co/bgV5vTp2/caution.png",
+                "https://i.ibb.co/dwTGydMf/1-online-video-cutter-com.gif",
+                "https://i.ibb.co/6JndrdYc/1-online-video-cutter-com-1.gif",
+                "https://i.ibb.co/XfqTY63L/1-online-video-cutter-com-2.gif"
+            ],
+      descRu:'ИИ-фотосессии, предметная съемка и создание анимированной инфографики для маркетплейсов с помощью нейросетей.',
+      descEn:'AI photoshoots, product photography, and creating animated infographics for marketplaces using neural networks.',
+      roleRu:'AI Промпт-инженер', roleEn:'AI Prompt Engineer' }
+];
+
+function openCase(id) {
+    currentProjectId = id;
+    const p = projects.find(x => x.id === id);
+    if (!p) return;
+
+    const container = document.getElementById('case-slides-container');
+    const isRu = currentLang === 'ru';
+
+    // Build hero block + info + image slides
+    let html = `
+        <div style="background:#111; padding:40px 20px 20px; border-bottom:1px solid #222;">
+            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#555;margin-bottom:12px;">${isRu ? p.catRu : p.catEn}</p>
+            <h1 style="font-family:'Space Grotesk','Pptelegraf',sans-serif;font-size:clamp(24px,5vw,56px);font-weight:400;color:#fff;line-height:1.05;margin-bottom:24px;">${isRu ? p.titleRu : p.titleEn}</h1>
+            <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
+                <div>
+                    <p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#555;margin-bottom:6px;">${isRu ? 'Роль' : 'Role'}</p>
+                    <p style="font-size:14px;color:#ccc;">${isRu ? p.roleRu : p.roleEn}</p>
+                </div>
+                <div>
+                    <p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#555;margin-bottom:6px;">${isRu ? 'Описание' : 'Description'}</p>
+                    <p style="font-size:14px;color:#999;max-width:600px;line-height:1.6;">${isRu ? p.descRu : p.descEn}</p>
+                </div>
+            </div>
+        </div>`;
+
+    p.imgs.forEach(src => {
+        html += `<div class="case-slide"><img src="${src}" loading="lazy" alt="${isRu ? p.titleRu : p.titleEn}"></div>`;
+    });
+
+    container.innerHTML = html;
+
+    viewHome.classList.replace('view-active','view-hidden');
+    viewCase.classList.replace('view-hidden','view-active');
+    document.getElementById('case-minibar').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevCase() {
+    if (!currentProjectId) return;
+    const idx = projects.findIndex(p => p.id === currentProjectId);
+    const prev = projects[(idx - 1 + projects.length) % projects.length];
+    openCase(prev.id);
+}
+function nextCase() {
+    if (!currentProjectId) return;
+    const idx = projects.findIndex(p => p.id === currentProjectId);
+    const next = projects[(idx + 1) % projects.length];
+    openCase(next.id);
+}
+
+// ── SERVICES ──
+const serviceData = [
+    { ru: '<strong>Проектирование интерфейсов (UX/UI):</strong> Создание структуры сайтов, личных кабинетов и CRM. Разработка интерактивных прототипов в Figma.<br><br><strong>Сборка сайтов на конструкторах:</strong> Полная настройка и запуск проектов на Tilda, Taplink, WordPress и современных ИИ-конструкторах.<br><br><strong>Фронтенд-разработка (Code):</strong> Вёрстка макетов на чистом коде (HTML, CSS, JavaScript). Создание нестандартных анимаций и адаптация под любые экраны.<br><br><strong>Редизайн и оптимизация:</strong> Переработка существующих интерфейсов для улучшения навигации и визуальной чистоты.',
+      en: '<strong>Interface design (UX/UI):</strong> Creating website structures, user dashboards, and CRMs. Developing interactive prototypes in Figma.<br><br><strong>Website builders:</strong> Full setup and launch of projects on Tilda, Taplink, WordPress, and modern AI builders.<br><br><strong>Frontend development (Code):</strong> Coding layouts from scratch (HTML, CSS, JavaScript). Creating custom animations and responsive adaptation.<br><br><strong>Redesign and optimization:</strong> Overhauling existing interfaces to improve navigation and visual clarity.' },
+    { ru: '<strong>Многостраничная вёрстка:</strong> Профессиональная подготовка книг, журналов, каталогов и брошюр в Adobe InDesign.<br><br><strong>Допечатная подготовка (Prepress):</strong> Подготовка макетов к печати в типографии с учётом технических требований (вылеты, цветовые профили, форматы).<br><br><strong>Брендинг и айдентика:</strong> Разработка логотипов, подбор фирменных цветов и шрифтов.<br><br><strong>Оформление соцсетей:</strong> Визуальный стиль для Telegram и Instagram, создание шаблонов постов.',
+      en: '<strong>Multipage layout:</strong> Professional preparation of books, magazines, catalogs, and brochures in Adobe InDesign.<br><br><strong>Prepress:</strong> Preparing layouts for printing (bleeds, color profiles, formats).<br><br><strong>Branding and identity:</strong> Logo development, corporate colors and fonts.<br><br><strong>Social media design:</strong> Visual style for Telegram and Instagram, post templates.' },
+    { ru: '<strong>ИИ-фотосессии:</strong> Генерация предметных и портретных снимков по исходным фотографиям с помощью нейросетей.<br><br><strong>Инфографика для маркетплейсов:</strong> Создание статичных и анимированных карточек товаров для Wildberries, Ozon и других площадок.<br><br><strong>3D-моделирование:</strong> Создание трёхмерных объектов, моделей механизмов и визуализация технических деталей в Blender или Autodesk Inventor.',
+      en: '<strong>AI photoshoots:</strong> Generating product and portrait images based on source photos using neural networks.<br><br><strong>Marketplace infographics:</strong> Creating static and animated product cards for e-commerce platforms.<br><br><strong>3D modeling:</strong> Creating 3D objects, mechanical models, and visualization in Blender or Autodesk Inventor.' },
+    { ru: '<strong>Ведение проектов:</strong> Сопровождение всех этапов работы в Miro, Notion или Jira. Соблюдение сроков и работа по методологиям Agile/Kanban.',
+      en: '<strong>Project Management:</strong> Oversight of all project stages in Miro, Notion, or Jira. Adherence to deadlines and work according to Agile/Kanban methodologies.' }
+];
+
+let activeService = null;
+function toggleService(idx) {
+    const panel = document.getElementById('service-desc-panel');
+    const text = document.getElementById('service-desc-text');
+    const cards = document.querySelectorAll('.service-card');
+
+    if (activeService === idx) {
+        activeService = null;
+        panel.classList.remove('show');
+        cards.forEach(c => c.classList.remove('active'));
+        return;
+    }
+    activeService = idx;
+    cards.forEach((c, i) => c.classList.toggle('active', i === idx));
+    const d = serviceData[idx];
+    text.innerHTML = currentLang === 'ru' ? d.ru : d.en;
+    panel.classList.add('show');
+}
+
+// ── GALLERY LIGHTBOX ──
+const galleryImages = [
+    'https://i.ibb.co/hRgcCPqF/1.png',
+    'https://i.ibb.co/gbwhhSzr/2.png',
+    'https://i.ibb.co/JRySpbsL/3.jpg',
+    'https://i.ibb.co/84KGr3Pv/4.png',
+    'https://i.ibb.co/VYXbLsr0/5.png'
+];
+let currentGalleryIdx = 0;
+
+function openGalleryLightbox(idx) {
+    currentGalleryIdx = idx;
+    const lb = document.getElementById('gallery-lightbox');
+    document.getElementById('lightbox-image').src = galleryImages[idx];
+    document.getElementById('lightbox-counter').textContent = `${idx+1} / ${galleryImages.length}`;
+    lb.classList.add('active');
+    document.addEventListener('keydown', galleryKeyHandler);
+}
+function closeGalleryLightbox(e) {
+    if (e && e.target && e.target.tagName === 'IMG') return;
+    document.getElementById('gallery-lightbox').classList.remove('active');
+    document.removeEventListener('keydown', galleryKeyHandler);
+}
+function nextGalleryImage() {
+    currentGalleryIdx = (currentGalleryIdx + 1) % galleryImages.length;
+    document.getElementById('lightbox-image').src = galleryImages[currentGalleryIdx];
+    document.getElementById('lightbox-counter').textContent = `${currentGalleryIdx+1} / ${galleryImages.length}`;
+}
+function prevGalleryImage() {
+    currentGalleryIdx = (currentGalleryIdx - 1 + galleryImages.length) % galleryImages.length;
+    document.getElementById('lightbox-image').src = galleryImages[currentGalleryIdx];
+    document.getElementById('lightbox-counter').textContent = `${currentGalleryIdx+1} / ${galleryImages.length}`;
+}
+function galleryKeyHandler(e) {
+    if (e.key === 'ArrowRight') nextGalleryImage();
+    if (e.key === 'ArrowLeft') prevGalleryImage();
+    if (e.key === 'Escape') closeGalleryLightbox();
+}
+
+// ── AI CHAT ──
+function toggleChat() {
+    const w = document.getElementById('ai-chat-window');
+    w.classList.toggle('open');
+}
+async function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+
+    const history = document.getElementById('chat-history');
+    history.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+    history.scrollTop = history.scrollHeight;
+
+    const thinking = document.createElement('div');
+    thinking.className = 'chat-msg bot';
+    thinking.innerHTML = '<div class="bubble" style="color:#999;">...</div>';
+    history.appendChild(thinking);
+    history.scrollTop = history.scrollHeight;
+
+    try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 1000,
+                system: `You are Alex Raduntsev's digital assistant. Alex is a web designer and developer from Russia. He works with Figma, HTML/CSS/JS, WordPress, Tilda, Taplink, Blender, Adobe InDesign. He has experience in UX/UI, graphic design, branding, 3D modeling, and print. His Instagram is @raduncalek, Telegram is @aleraduga. His hobbies are speleology, wood carving, and photography. Answer concisely in the language the user writes in (Russian or English).`,
+                messages: [{ role: 'user', content: msg }]
+            })
+        });
+        const data = await res.json();
+        const reply = data.content?.[0]?.text || '...';
+        thinking.innerHTML = `<div class="chat-label"><span class="${currentLang === 'ru' ? 'lang-ru' : 'lang-en'}">${currentLang === 'ru' ? 'Ассистент' : 'Assistant'}</span></div><div class="bubble">${reply}</div>`;
+    } catch {
+        thinking.innerHTML = '<div class="bubble" style="color:#999;">Ошибка соединения / Connection error</div>';
+    }
+    history.scrollTop = history.scrollHeight;
+}
+function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
+
+// ── PROJECT HOVER IMAGE EFFECT ──
+document.addEventListener('DOMContentLoaded', () => {
+    const projectItems = document.querySelectorAll('.collection-item');
+    
+    projectItems.forEach(item => {
+        const img = item.querySelector('.project-thumb');
+        
+        item.addEventListener('mousemove', (e) => {
+            const rect = item.getBoundingClientRect();
+            img.style.left = (e.clientX - rect.left) + 'px';
+            img.style.top = (e.clientY - rect.top) + 'px';
+        });
+    });
+});
+
+// ── BASKETBALL GAME ──
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initBasketball, 100);
+});
+
+function initBasketball() {
+    if (typeof Matter === 'undefined') return;
+    const { Engine, Runner, Bodies, Composite, Mouse, MouseConstraint, Events, Body } = Matter;
+
+    const wrapper = document.getElementById('basketball-wrapper');
+    const section = document.getElementById('challenge-section');
+
+    // Get real dimensions from the section (wrapper is absolute so has 0 size before layout)
+    let W = section.offsetWidth || window.innerWidth;
+    let H = section.offsetHeight || Math.round(window.innerHeight * 0.8);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;touch-action:none;';
+    wrapper.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    const engine = Engine.create();
+    engine.world.gravity.y = 1.5;
+
+    const BALL_R = Math.round(Math.min(W, H) * 0.035 + 12); // responsive radius
+
+    function getLayout(w, h) {
+        const isMobile = w < 600;
+        const isTablet = w >= 600 && w < 900;
+
+        // Ball radius: responsive but capped so it always fits through hoop
+        const r = Math.round(Math.min(w * 0.045, h * 0.055, 28));
+
+        // Hoop radius must be noticeably larger than ball so it can pass through
+        const hoopR = Math.round(r * 1.85);
+
+        // Hoop position: always right portion of canvas
+        // On mobile: hoop goes to lower-right, away from top text block
+        const hoopX = isMobile ? w * 0.73 : isTablet ? w * 0.74 : w * 0.76;
+        const hoopY = isMobile ? h * 0.62 : isTablet ? h * 0.40 : h * 0.38;
+
+        // Ball start: left side, vertically centered-ish
+        const ballX = isMobile ? w * 0.22 : w * 0.20;
+        const ballY = isMobile ? h * 0.80 : h * 0.72;
+
+        return { hoopX, hoopY, hoopR, ballX, ballY, r };
+    }
+
+    let layout = getLayout(W, H);
+
+    const wall = { isStatic: true, restitution: 0.5 };
+    let ground = Bodies.rectangle(W/2, H+25, W*3, 50, wall);
+    let leftW   = Bodies.rectangle(-25, H/2, 50, H*3, wall);
+    let rightW  = Bodies.rectangle(W+25, H/2, 50, H*3, wall);
+
+    const ball = Bodies.circle(layout.ballX, layout.ballY, layout.r, { restitution: 0.7, friction: 0.3, density: 0.003 });
+    Composite.add(engine.world, [ground, leftW, rightW, ball]);
+
+    // Hoop collision bodies
+    let hoopL = Bodies.rectangle(layout.hoopX - layout.hoopR, layout.hoopY, 10, 10, { isStatic: true, restitution: 0.3, label: 'hoopL' });
+    let hoopR = Bodies.rectangle(layout.hoopX + layout.hoopR, layout.hoopY, 10, 10, { isStatic: true, restitution: 0.3, label: 'hoopR' });
+    Composite.add(engine.world, [hoopL, hoopR]);
+
+    // Mouse / touch
+    const mouse = Mouse.create(canvas);
+    const mc = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.15, render: { visible: false } } });
+    Composite.add(engine.world, mc);
+
+    // Touch events
+    canvas.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        mouse.position.x = (t.clientX - rect.left) * (W / rect.width);
+        mouse.position.y = (t.clientY - rect.top) * (H / rect.height);
+        mouse.button = 0;
+    }, { passive: true });
+    canvas.addEventListener('touchmove', (e) => {
+        const t = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        mouse.position.x = (t.clientX - rect.left) * (W / rect.width);
+        mouse.position.y = (t.clientY - rect.top) * (H / rect.height);
+        if (mc.body) e.preventDefault();
+    }, { passive: false });
+    canvas.addEventListener('touchend', () => { mouse.button = -1; }, { passive: true });
+
+    let scored = false, score = 0;
+    const scoreEl = document.getElementById('score-counter');
+
+    Events.on(engine, 'afterUpdate', () => {
+        const l = getLayout(W, H);
+        const bx = ball.position.x;
+        const by = ball.position.y;
+
+        // Out of bounds reset
+        if (by > H + 100 || bx < -100 || bx > W + 100) {
+            Body.setPosition(ball, { x: l.ballX, y: l.ballY });
+            Body.setVelocity(ball, { x: 0, y: 0 });
+            Body.setAngularVelocity(ball, 0);
+            scored = false;
+        }
+
+        // Score detection: ball center passes through hoop opening
+        if (!scored && Math.abs(bx - l.hoopX) < l.hoopR * 0.85 && Math.abs(by - l.hoopY) < l.r + 8 && ball.velocity.y > 0) {
+            scored = true;
+            score++;
+            if (scoreEl) {
+                scoreEl.textContent = score;
+                scoreEl.style.transform = 'scale(1.3)';
+                setTimeout(() => scoreEl.style.transform = '', 300);
+            }
+
+            if (score === 1) {
+                const lockedEl = document.getElementById('locked-ui');
+                if (lockedEl) lockedEl.style.display = 'none';
+                const uc = document.getElementById('unlocked-content');
+                if (uc) {
+                    uc.classList.add('visible');
+                    setTimeout(() => uc.classList.add('animated'), 50);
+                }
+            }
+
+            setTimeout(() => {
+                const ll = getLayout(W, H);
+                Body.setPosition(ball, { x: ll.ballX, y: ll.ballY });
+                Body.setVelocity(ball, { x: 0, y: 0 });
+                Body.setAngularVelocity(ball, 0);
+                scored = false;
+            }, 800);
+        }
+    });
+
+    Runner.run(engine);
+
+    function draw() {
+        requestAnimationFrame(draw);
+        const l = getLayout(W, H);
+        ctx.clearRect(0, 0, W, H);
+
+        // Backboard (scaled with hoop size)
+        const bbW = Math.max(8, Math.round(l.hoopR * 0.28));
+        const bbH = Math.round(l.hoopR * 2.4);
+        ctx.fillStyle = 'rgba(0,0,0,0.07)';
+        ctx.fillRect(l.hoopX + l.hoopR + 3, l.hoopY - bbH * 0.72, bbW, bbH);
+        ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(l.hoopX + l.hoopR + 3, l.hoopY - Math.round(bbH * 0.38), bbW, Math.round(bbH * 0.52));
+
+        // Hoop ring
+        ctx.beginPath();
+        ctx.arc(l.hoopX, l.hoopY, l.hoopR, 0, Math.PI * 2);
+        ctx.strokeStyle = '#ff4500';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Net lines (scaled with hoopR)
+        const netH = Math.round(l.hoopR * 1.1);
+        ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            ctx.beginPath();
+            const x1 = l.hoopX - l.hoopR + (2 * l.hoopR / 5) * i;
+            const x2 = l.hoopX - l.hoopR * 0.65 + (1.3 * l.hoopR / 5) * i;
+            ctx.moveTo(x1, l.hoopY + 3);
+            ctx.lineTo(x2, l.hoopY + netH);
+            ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.moveTo(l.hoopX - l.hoopR * 0.65, l.hoopY + netH);
+        ctx.lineTo(l.hoopX + l.hoopR * 0.65, l.hoopY + netH);
+        ctx.stroke();
+
+        // Ball
+        const bx = ball.position.x;
+        const by = ball.position.y;
+        const ba = ball.angle;
+        const r  = l.r;  // use current layout's radius
+
+        ctx.save();
+        ctx.translate(bx, by);
+        ctx.rotate(ba);
+
+        // Shadow
+        ctx.beginPath();
+        ctx.ellipse(2, r + 4, r * 0.8, r * 0.25, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.fill();
+
+        // Ball body
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        const grad = ctx.createRadialGradient(-r*0.3, -r*0.3, r*0.1, 0, 0, r);
+        grad.addColorStop(0, '#ff6a30');
+        grad.addColorStop(1, '#c83000');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = '#aa2800';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Ball seam lines
+        ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(-r, 0); ctx.lineTo(r, 0); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, -r); ctx.lineTo(0, r); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.55, -Math.PI * 0.3, Math.PI * 0.3);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.55, Math.PI - Math.PI * 0.3, Math.PI + Math.PI * 0.3);
+        ctx.stroke();
+
+        ctx.restore();
+    }
+    draw();
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+        W = section.offsetWidth || window.innerWidth;
+        H = section.offsetHeight || Math.round(window.innerHeight * 0.8);
+        canvas.width = W;
+        canvas.height = H;
+
+        Body.setPosition(ground, { x: W/2, y: H + 25 });
+        Body.setPosition(leftW,  { x: -25, y: H/2 });
+        Body.setPosition(rightW, { x: W+25, y: H/2 });
+
+        Composite.remove(engine.world, hoopL);
+        Composite.remove(engine.world, hoopR);
+        const nl = getLayout(W, H);
+        hoopL = Bodies.rectangle(nl.hoopX - nl.hoopR, nl.hoopY, 10, 10, { isStatic: true, restitution: 0.3, label: 'hoopL' });
+        hoopR = Bodies.rectangle(nl.hoopX + nl.hoopR, nl.hoopY, 10, 10, { isStatic: true, restitution: 0.3, label: 'hoopR' });
+        Composite.add(engine.world, [hoopL, hoopR]);
+
+        const ll = getLayout(W, H);
+        Body.setPosition(ball, { x: ll.ballX, y: ll.ballY });
+        Body.setVelocity(ball, { x: 0, y: 0 });
+        Mouse.setOffset(mouse, { x: 0, y: 0 });
+    });
+}
+
+// ── SERVICES MOBILE SLIDER DOTS ──
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('services-mobile-track');
+    const dotsContainer = document.getElementById('services-mobile-dots');
+    if (!track || !dotsContainer) return;
+
+    const cards = track.querySelectorAll('.services-mobile-card');
+    const count = cards.length;
+
+    // Build dots
+    const dots = [];
+    for (let i = 0; i < count; i++) {
+        const d = document.createElement('div');
+        d.className = 'services-mobile-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', () => {
+            cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        });
+        dotsContainer.appendChild(d);
+        dots.push(d);
+    }
+
+    // Update active dot on scroll
+    track.addEventListener('scroll', () => {
+        const scrollLeft = track.scrollLeft;
+        const cardWidth = cards[0].offsetWidth + 12; // gap
+        const idx = Math.round(scrollLeft / cardWidth);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, { passive: true });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('active'); obs.unobserve(e.target); }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+});
+
+// ── MOBILE PROJECT THUMBNAILS (appear when item is centered in viewport) ──
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.innerWidth > 767) return;
+
+    const items = document.querySelectorAll('.collection-item');
+    if (!items.length) return;
+
+    const thumbObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('thumb-visible');
+            } else {
+                entry.target.classList.remove('thumb-visible');
+            }
+        });
+    }, {
+        // Only trigger when item occupies the middle 40% of the screen
+        rootMargin: '-28% 0px -28% 0px',
+        threshold: 0
+    });
+
+    items.forEach(item => thumbObserver.observe(item));
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 767) {
+            items.forEach(item => item.classList.remove('thumb-visible'));
+            thumbObserver.disconnect();
+        }
+    }, { passive: true });
+});
+</script>
+
+</body>
+</html>
