@@ -472,6 +472,7 @@
             padding: 0;
             width: auto;
             flex: 1;
+            max-width: 350px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -488,7 +489,7 @@
         
         .carousel__slide .exp-title {
             font-family: 'Space Grotesk', 'Pptelegraf', sans-serif;
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 400;
             line-height: 1.2;
             color: #000;
@@ -507,6 +508,7 @@
             margin: 32px -8px 0 -8px;
             display: flex;
             gap: 0;
+            justify-content: center;
         }
         
         .carousel__thumbnails li {
@@ -538,6 +540,14 @@
             background: #777777;
             box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.25);
         }
+
+        .carousel__slides input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
 
         /* ── GALLERY ── */
         .gallery-grid {
@@ -670,7 +680,7 @@
         #unlocked-content.animated { opacity: 1; }
         .contact-icons { display: flex; gap: 10px; flex-wrap: wrap; }
         .contact-icon-btn {
-            width: 48px; height: 48px;
+            width: 100px; height: 100px;
             display: flex; align-items: center; justify-content: center;
             border: 1px solid #ddd;
             background: #f5f5f5;
@@ -703,7 +713,7 @@
             .challenge-desc { font-size: 11px; margin-bottom: 12px; max-width: 100%; }
             .score-display { font-size: clamp(28px, 7vw, 44px); }
             .locked-pill { font-size: 16px; padding: 9px 12px; gap: 7px; }
-            .contact-icon-btn { width: 40px; height: 40px; }
+            .contact-icon-btn { width: 50px; height: 50px; }
             .contact-icon-btn svg { width: 16px; height: 16px; }
         }
 
@@ -1397,15 +1407,18 @@
                                 <div class="exp-year">2023</div>
                                 <div class="exp-title">
                                     <strong>
-                                        <span class="lang-ru">Дизайнер-преподаватель</span>
-                                        <span class="lang-en">Designer-Teacher</span>
+                                        <span class="lang-ru">Дизайнер-фрилансер</span>
+                                        <span class="lang-en">Freelance</span>
                                     </strong>
                                     <br>
-                                    <span class="lang-ru">Независимый специалист</span>
-                                    <span class="lang-en">Independent</span>
+                                    <span class="lang-ru" style="font-size: 20px;">Независимый специалист</span>
+                                    <span class="lang-en" style="font-size: 20px;">Independent</span>
                                 </div>
                                 <div class="exp-details">
-                                    <span class="lang-ru">Обучение студентов основам графического и веб-дизайна. Подготовка методических материалов и учебных программ.</span>
+                                    <span class="lang-ru">Я пересобирал интерфейсы CRM-систем. Убирал лишние кнопки и чистил таблицы. Генерил концепты, лендинги, добавил в договор пункт "о трёх раундах правок", благополучно опять делал десять раундов правок. Ведь я работаю для клиента, ну и время позволяло.<br><br>
+Запускал сайты под ключ. Использовал Tilda, WordPress или чистый код на HTML, CSS и JS. Мне было важно, чтобы проект работал быстро и был интуитивно понятным, не как этот сайт-портфолио.<br><br>
+Верстал книги и журналы. Готовил макеты к печати, В типографии нет кнопки «отмена», поэтому я отвечал за техническую чистоту и качество продукта, чтобы макет работал как положено.<br><br>
+Ну и делал ещё много всего, много плохого, о чем даже вспоминать страшно.</span>
                                     <span class="lang-en">Teaching students fundamentals of graphic and web design. Preparing methodological materials and curricula.</span>
                                 </div>
                             </figcaption>
@@ -1426,8 +1439,10 @@
                                     <span class="lang-en">Project Manager</span>
                                 </div>
                                 <div class="exp-details">
-                                    <span class="lang-ru">Управление процессами: Контроль сроков и качества реализации технических задач.<br>Методологии: Работа по Agile и Kanban, координация взаимодействия между заказчиком и исполнителями.</span>
-                                    <span class="lang-en">Process management: Monitoring deadlines and quality of technical task implementation.<br>Methodologies: Working with Agile and Kanban, coordinating between client and executors.</span>
+                                    <span class="lang-ru">В ECT center я пришел оператором, через месяц уже стал ментором, а ушел менеджером проектов. Контролировал сроки и качество технических задач, ничего особенного, просто бесконечная отчетность и ведения exel-таблиц. Это была борьба на выживание по 12 часов в день.<br><br>
+Работал по Agile и Kanban. Наставлял менторов, операторов, проводил созвоны, решал кучу проблем. Главное - у меня было право голоса и я голосовал за эффективность: написал книгу по работе оператора (без шуток) и концепты им порисовал (ни один они так и не реализовали).</span>
+                                    <span class="lang-en">I started at ECT Center as an operator. A month later, I became a mentor. I left as a project manager. I monitored deadlines and technical task quality. Nothing special: just endless reports and Excel sheets. It was a 12-hour-a-day struggle for survival.<br><br>
+I worked with Agile and Kanban. I mentored mentors and operators. I held meetings and solved tons of problems. Most importantly, I had a voice and I voted for efficiency. I wrote an operator’s manual (no joke) and drew some concepts for them. They never implemented a single one.</span>
                                 </div>
                             </figcaption>
                         </figure>
@@ -1447,8 +1462,10 @@
                                     <span class="lang-en">PR Intern</span>
                                 </div>
                                 <div class="exp-details">
-                                    <span class="lang-ru">Верстка материалов: Подготовка презентаций и информационных брошюр.<br>Поддержка коммуникаций: Участие в разработке визуальной составляющей PR-кампаний.</span>
-                                    <span class="lang-en">Layout design: Preparing presentations and information brochures.<br>Communication support: Participating in visual development of PR campaigns.</span>
+                                    <span class="lang-ru">В Aquatoria я был стажером в PR-отделе. Верстал презентации и информационные брошюры. Даже в обычные отчеты впихивал модульные сетки. Я хотел, чтобы документы выглядели как чертежи, не знаю зачем. В PR-отделе мало кто ценит типографику, поэтому я просто молча наводил порядок в макетах. Иногда мне разрешали покритиковать и предложить свои креативы, но это только если я хорошо себя вёл.<br><br>
+Помогал с визуальной частью рекламных кампаний. Я адаптировал графику под разные носители. Сегодня я делал баннер для сайта, а завтра — макет для печати. Это была настоящая школа. Я переносил логотипы и тексты с одного формата на другой часами. Так я научился работать быстро. В этой спешке я понял одну вещь. Без четких правил и гайдлайнов любая кампания превращается в кашу из правок и ошибок.</span>
+                                    <span class="lang-en">At Aquatoria, I was an intern in the PR department. I designed presentations and brochures. I shoved modular grids even into regular reports. I wanted the documents to look like blueprints, I don't know why. In the PR department, few people care about typography, so I just quietly put the layouts in order. Sometimes they let me critique things and suggest my own ideas, but only if I behaved well.<br><br>
+I helped with the visuals for ad campaigns. I adapted graphics for different formats. Today I’d make a web banner, and tomorrow—a print layout. It was a real school. I spent hours moving logos and text from one format to another. That's how I learned to work fast. In that rush, I realized one thing. Without clear rules and guidelines, any campaign turns into a mess of edits and mistakes.</span>
                                 </div>
                             </figcaption>
                         </figure>
@@ -1460,7 +1477,7 @@
                                 <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
                             </div>
                             <figcaption>
-                                <div class="exp-year">2025</div>
+                                <div class="exp-year">авг 2025</div>
                                 <div class="exp-title">
                                     <strong>Cybermisha</strong>
                                     <br>
@@ -1468,8 +1485,10 @@
                                     <span class="lang-en">Content Designer</span>
                                 </div>
                                 <div class="exp-details">
-                                    <span class="lang-ru">Визуальный контент: Проектирование графических материалов и инфографики для цифровых платформ.<br>Работа с ИИ: Применение нейросетей для генерации и обработки визуальных ассетов.</span>
-                                    <span class="lang-en">Visual content: Designing graphic materials and infographics for digital platforms.<br>AI implementation: Using neural networks to generate and process visual assets.</span>
+                                    <span class="lang-ru">В Cybermisha я проектировал графику и инфографику. Старался упаковать данные так, чтобы в них была логика. Делал контент для цифровых платформ. Раньше работал сценаристом, поэтому ещё и посты ему писал. Попал к ним прямо на закуп рекламы и вместе со мной за месяц они выросли в 2 раза: с 7 тысяч подписчиков, до 14. В целом, моей заслуги в этом нет никакой, просто повезло оказаться в нужном месте, в нужное время.<br><br>
+Использовал нейросети. Генерировал и обрабатывал через них ассеты. Это помогало не тратить часы на рутину. Ускорял производство как мог. Но после ИИ всё равно приходилось многое править руками. Машина всё-таки иногда выдает странные штуки.</span>
+                                    <span class="lang-en">At Cybermisha TG-channel, I designed graphics and infographics. I tried to pack data so it had logic. I made content for digital platforms. I used to be a screenwriter, so I wrote the posts as well. I joined right during an ad campaign. In one month, they doubled their followers from 7,000 to 14,000. It wasn't really my merit. I was just in the right place at the right time.<br><br>
+I used AI. I generated and processed assets with it. It helped me avoid routine. I sped up production as much as possible. But I still had to fix a lot of things by hand. Machines still make weird mistakes sometimes.</span>
                                 </div>
                             </figcaption>
                         </figure>
@@ -1482,8 +1501,8 @@
                             </div>
                             <figcaption>
                                 <div class="exp-year" style="color:#999;">
-                                    <span class="lang-ru">2025 — н.в.</span>
-                                    <span class="lang-en">2025 — Present</span>
+                                    <span class="lang-ru">сен 2025 — н.в.</span>
+                                    <span class="lang-en">sep 2025 — Present</span>
                                 </div>
                                 <div class="exp-title">
                                     <strong>EngAtmo</strong>
@@ -1492,42 +1511,14 @@
                                     <span class="lang-en">Junior Designer</span>
                                 </div>
                                 <div class="exp-details">
-                                    <span class="lang-ru">Проектирование систем: Разработка архитектуры и визуальных гайдлайнов для образовательных платформ (Miro).<br>Веб-разработка & Брендинг: Дизайн и сборка сайта-визитки. Редизайн айдентики и оформление контента.</span>
-                                    <span class="lang-en">Systems design: Architecture and visual guidelines for educational platforms (Miro).<br>Web Dev & Branding: Design and build of portfolio site. Identity redesign and content formatting.</span>
-                                </div>
-                            </figcaption>
-                        </figure>
-                    </li>
-                    
-                    <li class="carousel__slide">
-                        <figure>
-                            <div>
-                                <img src="https://i.ibb.co/rGzL4cN1/gifme.gif" alt="">
-                            </div>
-                            <figcaption>
-                                <div class="exp-title">
-                                    <strong>
-                                        <span class="lang-ru">Навыки и инструменты</span>
-                                        <span class="lang-en">Skills & Tools</span>
-                                    </strong>
-                                </div>
-                                <div class="exp-details">
-                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px; font-size:16px;">
-                                        <div>
-                                            <p style="font-size:16px; line-height:1.8; color:#555; margin:0;">
-                                                Design:Figma, Adobe XD, Sketch<br>
-                                                3D & Motion: Blender, After Effects<br>
-                                                Publishing: InDesign, Figma
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p style="font-size:16px; line-height:1.8; color:#555; margin:0;">
-                                                Web: HTML/CSS/JS, React<br>
-                                                Platforms: WordPress, Tilda, Taplink<br>
-                                                AI: Neural Networks, Generative Tools
-                                            </p>
-                                        </div>
-                                    </div>
+                                    <span class="lang-ru">В EngAtmo я проектирую системы обучения. В основном работаю в Miro: выстраиваю архитектуру и пишу визуальные гайдлайны. Дизайн для преподов - это, в целом, теперь моя ниша и я здесь как в болоте. Прошу, вытащите меня отсюда.<br><br>
+Собрал сайт-визитку на TapLink. Сам нарисовал дизайн и сам всё настроил. Сделал так, чтобы у школы было простое и рабочее лицо в сети, которое не бесит пользователя и не похоже на сову от известной компании.<br><br>
+Обновил айдентику и теперь слежу за визуалом. Готовлю макеты для наружной рекламы и оформляю посты в Telegram. Стараюсь, чтобы всё — от баннера на улице до картинки в телефоне — выглядело как одна система, а не набор случайных картинок. <br><br>
+Дизайн-система в Figma сейчас уже не загружается полностью без 16Гб оперативной памяти. А у меня только 8Гб...</span>
+                                    <span class="lang-en">At EngAtmo, I design learning systems. I mostly work in Miro: building the architecture and writing visual guidelines. Designing for teachers is my niche now, and I’m stuck here like in a swamp. Please, get me out of here.<br><br>
+I built a TapLink landing page. I did the design and the setup myself. I made sure the school has a simple, working face online that doesn't annoy users and doesn't look like that famous owl.<br><br>
+I updated the brand identity and now I handle the visuals. I prepare outdoor ads and design Telegram content. I try to make everything—from a billboard to a phone screen—look like one system, not a bunch of random images.<br><br>
+The design system in Figma doesn’t even load fully anymore without 16GB of RAM. And I only have 8GB...</span>
                                 </div>
                             </figcaption>
                         </figure>
@@ -1540,7 +1531,6 @@
                     <li><label for="exp-slide-3">2024</label></li>
                     <li><label for="exp-slide-4">2025</label></li>
                     <li><label for="exp-slide-5">2025-<br>н.в.</label></li>
-                    <li><label for="exp-slide-6">навыки</label></li>
                 </ul>
             </div>
         </div>
@@ -1600,10 +1590,32 @@
 
         <div class="challenge-content">
             <!-- Score -->
-            <div id="score-counter" class="score-display">0</div>
-            <div class="score-label">
-                <span class="lang-ru">Счёт</span><span class="lang-en">Score</span>
-            </div>
+            <div style="display:flex; align-items:center; gap:16px;">
+    <div id="score-counter" class="score-display">0</div>
+    <div class="score-label">
+        <span class="lang-ru">Счёт</span><span class="lang-en">Score</span>
+    </div>
+    <div id="unlocked-content">
+        <div class="contact-icons">
+            <!-- Telegram -->
+            <a href="https://t.me/aleraduga" target="_blank" class="contact-icon-btn" title="Telegram">
+                <img src="https://i.ibb.co/rR1rGbTz/telegram-icon-131945.png" alt="Telegram" width="35" height="35" style="object-fit:contain;">
+            </a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/raduncalek/" target="_blank" class="contact-icon-btn" title="Instagram">
+                <img src="https://i.ibb.co/WNVgxrBz/instagram-logo-icon-173753.png" alt="Instagram" width="35" height="35" style="object-fit:contain;">
+            </a>
+            <!-- Behance -->
+            <a href="https://www.behance.net/507cc99e" target="_blank" class="contact-icon-btn" title="Behance">
+                <img src="https://i.ibb.co/7xcdH31S/behance-logo-icon-189229.png" alt="Behance" width="35" height="35" style="object-fit:contain;">
+            </a>
+            <!-- Gmail -->
+            <a href="mailto:alex@raduntsev.ru" class="contact-icon-btn" title="Gmail">
+                <img src="https://i.ibb.co/rRJBk9Vg/gmail-icon-137543.png" alt="Gmail" width="35" height="35" style="object-fit:contain;">
+            </a>
+        </div>
+    </div>
+</div>
 
             <h2 class="challenge-title">
                 <span class="lang-ru">Докажите, что вы человек</span>
@@ -1620,29 +1632,6 @@
                     <span class="lang-ru">Хватайте мяч мышкой →</span>
                     <span class="lang-en">Grab the ball with mouse →</span>
                 </span>
-            </div>
-
-            <div id="unlocked-content">
-                <div>
-                    <div class="contact-icons">
-                        <!-- Telegram -->
-                        <a href="https://t.me/aleraduga" target="_blank" class="contact-icon-btn" title="Telegram">
-                            <img src="https://i.ibb.co/rR1rGbTz/telegram-icon-131945.png" alt="Telegram" width="28" height="28" style="object-fit:contain;">
-                        </a>
-                        <!-- Instagram -->
-                        <a href="https://www.instagram.com/raduncalek/" target="_blank" class="contact-icon-btn" title="Instagram">
-                            <img src="https://i.ibb.co/WNVgxrBz/instagram-logo-icon-173753.png" alt="Instagram" width="28" height="28" style="object-fit:contain;">
-                        </a>
-                        <!-- Behance -->
-                        <a href="https://www.behance.net/alexraduntsev" target="_blank" class="contact-icon-btn" title="Behance">
-                            <img src="https://i.ibb.co/7xcdH31S/behance-logo-icon-189229.png" alt="Behance" width="28" height="28" style="object-fit:contain;">
-                        </a>
-                        <!-- Gmail -->
-                        <a href="mailto:alex@raduntsev.ru" class="contact-icon-btn" title="Gmail">
-                            <img src="https://i.ibb.co/rRJBk9Vg/gmail-icon-137543.png" alt="Gmail" width="28" height="28" style="object-fit:contain;">
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -1791,8 +1780,8 @@ const projects = [
                 "https://i.ibb.co/RGdPbfm2/Slice-12.gif",
                 "https://i.ibb.co/G3P9Dhp9/Slice-13.jpg",
                 "https://i.ibb.co/7xfYkxMQ/Slice-14.gif",
-                "https://i.ibb.co/gZ8Y9677/Slice-16.gif",
                 "https://i.ibb.co/WNR1nsnj/Slice-15.gif",
+                "https://i.ibb.co/gZ8Y9677/Slice-16.gif",
                 "https://i.ibb.co/M5fW8sBS/Slice-17.gif"
 
             ],
@@ -2099,6 +2088,8 @@ function initBasketball() {
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;touch-action:none;';
+    // Re-enable scroll wheel over the canvas
+    canvas.addEventListener('wheel', (e) => { e.stopPropagation(); }, { passive: true });
     wrapper.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
@@ -2146,6 +2137,8 @@ function initBasketball() {
 
     // Mouse / touch
     const mouse = Mouse.create(canvas);
+    // Remove Matter.js's wheel listener that blocks page scroll
+    canvas.removeEventListener('wheel', mouse.mousewheel);
     const mc = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.15, render: { visible: false } } });
     Composite.add(engine.world, mc);
 
@@ -2193,14 +2186,21 @@ function initBasketball() {
             }
 
             if (score === 1) {
-                const lockedEl = document.getElementById('locked-ui');
-                if (lockedEl) lockedEl.style.display = 'none';
-                const uc = document.getElementById('unlocked-content');
-                if (uc) {
-                    uc.classList.add('visible');
-                    setTimeout(() => uc.classList.add('animated'), 50);
-                }
-            }
+    const lockedEl = document.getElementById('locked-ui');
+    if (lockedEl) lockedEl.style.display = 'none';
+
+    // Hide title and description too
+    const title = document.querySelector('.challenge-title');
+    const desc = document.querySelector('.challenge-desc');
+    if (title) title.style.display = 'none';
+    if (desc) desc.style.display = 'none';
+
+    const uc = document.getElementById('unlocked-content');
+    if (uc) {
+        uc.classList.add('visible');
+        setTimeout(() => uc.classList.add('animated'), 50);
+    }
+}
 
             setTimeout(() => {
                 const ll = getLayout(W, H);
@@ -2261,12 +2261,6 @@ function initBasketball() {
         ctx.save();
         ctx.translate(bx, by);
         ctx.rotate(ba);
-
-        // Shadow
-        ctx.beginPath();
-        ctx.ellipse(2, r + 4, r * 0.8, r * 0.25, 0, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,0,0,0.12)';
-        ctx.fill();
 
         // Ball body
         ctx.beginPath();
@@ -2390,6 +2384,13 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbObserver.disconnect();
         }
     }, { passive: true });
+});
+
+document.querySelectorAll('.carousel__thumbnails label').forEach(label => {
+    label.addEventListener('click', (e) => {
+        const scrollY = window.scrollY;
+        requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'instant' }));
+    });
 });
 </script>
 
